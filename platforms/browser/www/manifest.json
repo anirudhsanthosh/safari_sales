@@ -1,0 +1,11 @@
+{
+  "background_color": "#FFF",
+  "display": "standalone",
+  "name": "safari sales",
+  "short_name": "safari sales",
+  "version": "com.entertext.safari.app",
+  "description": "Sales report and attendance application for safari.",
+  "author": "Anirudh santhosh",
+  "icons": [],
+  "start_url": "index.html"
+}

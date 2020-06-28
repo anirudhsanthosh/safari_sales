@@ -1,0 +1,20 @@
+<ons-page id="home">
+  <ons-toolbar id="home-toolbar">
+    <div class="left">
+      <ons-toolbar-button onclick="openMenu()">
+        <ons-icon icon="md-menu"></ons-icon>
+      </ons-toolbar-button>
+    </div>
+    <div class="center">SALES</div>
+  </ons-toolbar>
+
+  <ons-tabbar swipeable position="auto" id="tabbar">
+    <ons-tab page="sales.html" label="SALES" icon="md-money-box"></ons-tab>
+    <ons-tab page="target.html" label="TARGET" icon="md-chart"></ons-tab>
+    <ons-tab page="store.html" label="STORE" icon="md-store"></ons-tab>
+  </ons-tabbar>
+
+  <script>
+    document.querySelector("#menu").setAttribute("swipeable");
+  </script>
+</ons-page>

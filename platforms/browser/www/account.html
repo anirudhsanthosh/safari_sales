@@ -1,0 +1,91 @@
+<ons-page id="account">
+  <ons-toolbar>
+    <div class="center">Account</div>
+    <div class="left">
+      <ons-back-button modifier="material"></ons-back-button>
+    </div>
+  </ons-toolbar>
+  <ons-list>
+    <ons-list-item>
+      <div class="left">
+        <ons-icon
+          style="color: rgb(0, 118, 255);"
+          size="30px"
+          icon="md-face"
+        ></ons-icon>
+      </div>
+      <div class="center">
+        <span class="list-item__title">Username</span
+        ><span class="list-item__subtitle" id="username"></span>
+      </div>
+    </ons-list-item>
+    <ons-list-item>
+      <div class="left">
+        <ons-icon
+          style="color: rgb(0, 118, 255);"
+          size="30px"
+          icon="md-phone"
+        ></ons-icon>
+      </div>
+      <div class="center">
+        <span class="list-item__title">Phone</span
+        ><span class="list-item__subtitle" id="phone"></span>
+      </div>
+      <div class="right" data-name="editPhone" onclick="profileEdit(this)">
+        <ons-icon
+          style="color: rgb(0, 0, 0);"
+          size="18px"
+          icon="md-edit"
+        ></ons-icon>
+      </div>
+    </ons-list-item>
+    <ons-list-item modifier="longdivider">
+      <div class="left">
+        <ons-icon
+          style="color: rgb(0, 118, 255);"
+          size="30px"
+          icon="md-email"
+        ></ons-icon>
+      </div>
+      <div class="center">
+        <span class="list-item__title">Email</span
+        ><span class="list-item__subtitle" id="email"></span>
+      </div>
+      <div class="right" data-name="editEmail" onclick="profileEdit(this)">
+        <ons-icon
+          style="color: rgb(0, 0, 0);"
+          size="18px"
+          icon="md-edit"
+        ></ons-icon>
+      </div>
+    </ons-list-item>
+    <ons-list-item
+      modifier="chevron"
+      tappable
+      id="changePassword"
+      data-name="editPassword"
+      onclick="profileEdit(this)"
+      ><div class="left">
+        <ons-icon
+          style="color: rgb(0, 118, 255);"
+          size="30px"
+          icon="md-shield-security"
+        ></ons-icon>
+      </div>
+      <div class="center">
+        <span class="list-item__title">Change Password</span
+        ><span class="list-item__subtitle"></span>
+      </div>
+    </ons-list-item>
+  </ons-list>
+
+  <ons-dialog id="editDialogue">
+    <div class="text-center p-2 pt-4 pb-4" id="editDialogueContent"></div>
+  </ons-dialog>
+
+  <script>
+    document.querySelector("#username").innerHTML = user.get("username");
+    document.querySelector("#phone").innerHTML = user.get("phone");
+    document.querySelector("#email").innerHTML = user.get("email");
+  </script>
+</ons-page>

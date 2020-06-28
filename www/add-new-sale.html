@@ -1,0 +1,177 @@
+<ons-page id="add-new-sale">
+  <ons-toolbar>
+    <div class="center">Add New Sale</div>
+    <div class="left">
+      <ons-back-button modifier="material"></ons-back-button>
+    </div>
+  </ons-toolbar>
+
+  <div class="d-flex h-100 align-items-center">
+    <div class="w-100">
+      <ons-card>
+        <div class="content">
+          <!-- <ons-row>
+            <ons-col width="50px">
+              <ons-icon icon="fa-twitter"></ons-icon>
+            </ons-col>
+            <ons-col>Text</ons-col>
+          </ons-row> -->
+          <ons-list>
+            <!-- <ons-list-header>Amount</ons-list-header> -->
+            <ons-list-item
+              ><ons-input
+                id="salesAmount"
+                modifier="underbar"
+                placeholder="Amount"
+                type="number"
+                float
+                class="w-100"
+              ></ons-input
+            ></ons-list-item>
+            <!-- <ons-list-header>Contact Number</ons-list-header> -->
+            <ons-list-item
+              ><ons-input
+                id="salesWalkin"
+                type="number"
+                modifier="underbar"
+                placeholder="Walk in"
+                float
+                class="w-100"
+              ></ons-input
+            ></ons-list-item>
+            <ons-list-item>
+              <ons-input
+                id="salesConversion"
+                modifier="underbar"
+                type="number"
+                placeholder="Conversion"
+                float
+                class="w-100"
+              ></ons-input>
+            </ons-list-item>
+            <ons-list-item>
+              <ons-input
+                id="salesQnty"
+                modifier="underbar"
+                type="number"
+                placeholder="Quantity"
+                float
+                class="w-100"
+              >
+              </ons-input>
+            </ons-list-item>
+            <ons-list-item>
+              <ons-input
+                id="atSale"
+                modifier="underbar"
+                type="number"
+                placeholder="American Tourister"
+                float
+                class="w-100"
+              >
+              </ons-input>
+            </ons-list-item>
+            <ons-list-item>
+              <ons-input
+                id="vipSale"
+                modifier="underbar"
+                type="number"
+                placeholder="VIP "
+                float
+                class="w-100"
+              >
+              </ons-input>
+            </ons-list-item>
+            <ons-list-item>
+              <ons-input
+                id="otherSale"
+                modifier="underbar"
+                type="number"
+                placeholder="Total of other brand sale"
+                float
+                class="w-100"
+              >
+              </ons-input>
+            </ons-list-item>
+
+            <ons-list-item>
+              <ons-button style="margin-left: auto;" onclick="saveSales()"
+                >Save</ons-button
+              >
+            </ons-list-item>
+          </ons-list>
+        </div>
+      </ons-card>
+    </div>
+  </div>
+  <script>
+    function saveSales() {
+      showModal();
+      const amount = document.querySelector("#salesAmount").value;
+      const walkin = document.querySelector("#salesWalkin").value;
+      const conversion = document.querySelector("#salesConversion").value;
+      const qnty = document.querySelector("#salesQnty").value;
+      const at = document.querySelector("#atSale").value;
+      const vip = document.querySelector("#vipSale").value;
+      const totalOfOther = document.querySelector("#otherSale").value;
+
+      if (
+        amount.length === 0 ||
+        walkin === "" ||
+        conversion === "" ||
+        qnty.length === 0 ||
+        at.length === 0 ||
+        vip.length === 0 ||
+        totalOfOther.length === 0
+      ) {
+        toast("please fill all fields !");
+        showModal();
+        return;
+      }
+      if (Number(walkin) < Number(conversion)) {
+        toast("please check Walk-in and conversion fields !");
+        showModal();
+        return;
+      }
+      safari.createSalesOverview(
+        user.get("key"),
+        amount,
+        walkin,
+        conversion,
+        qnty,
+        at,
+        vip,
+        totalOfOther,
+        (e) => {
+          showModal();
+          console.log(e);
+
+          if (typeof e != "object") {
+            toast("Service unavailable please try again later !");
+            return;
+          }
+
+          if (e.status != "success") {
+            if (typeof e.message == "object") {
+              e.message.map((message) => {
+                ons.notification.toast(message, { timeout: 1300 });
+              });
+              return;
+            }
+            ons.notification.toast(e.message, { timeout: 2000 });
+            return;
+          }
+          toast(e.message);
+          if (e.data.length == 1) {
+            salesOverView.set(e.data);
+            showSalesOverview();
+            getTargetData();
+          }
+          const navigator = document.querySelector("#navigator");
+          navigator.popPage();
+          return;
+        }
+      );
+    }
+  </script>
+</ons-page>

@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "383752765744",
+    "firebase_url": "https://safarisales-e1016.firebaseio.com",
+    "project_id": "safarisales-e1016",
+    "storage_bucket": "safarisales-e1016.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:383752765744:android:ba9de9c80c2276153d48f5",
+        "android_client_info": {
+          "package_name": "com.entertext.safari.app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "383752765744-vt7hpica7rf7d8lqn8jratsaqqf6lj06.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCNL5hNuInLciKJGcMuScmmqENou7gFzJ8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "383752765744-vt7hpica7rf7d8lqn8jratsaqqf6lj06.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

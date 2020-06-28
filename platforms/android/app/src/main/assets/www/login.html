@@ -1,0 +1,66 @@
+<ons-page id="login">
+  <script>
+    // checking user is previously loged in or not
+
+    const login = () => {
+      showModal();
+      const username = document.querySelector("#username").value;
+      const password = document.querySelector("#password").value;
+
+      if (username !== "" && password !== "") {
+        safari.login(username, password, (e) => {
+          console.log(e); // log response from server
+          showModal();
+          if (e.status !== "success") {
+            notification(e.message);
+            return;
+          }
+
+          user.set(e.data);
+          localStorage.setItem(LOGIN, JSON.stringify({ status: true }));
+
+          if (isLoggedIn()) {
+            const navigator = document.querySelector("#navigator");
+            navigator.resetToPage("home.html");
+            return;
+          }
+          notification("Something went wrong please try again ");
+        });
+      } else {
+        showModal();
+        notification("Please Fill Everything");
+        return true;
+      }
+    };
+  </script>
+  <div
+    class="d-flex w-100 h-100 justify-content-center align-items-center flex-column"
+  >
+    <div class="login-logo"></div>
+    <div class="w-100 text-center">
+      <p class="w-100 p-2">
+        <ons-input
+          id="username"
+          placeholder="Username"
+          modifier="underbar"
+          float
+        ></ons-input>
+      </p>
+
+      <p class="w-100 p-2">
+        <ons-input
+          id="password"
+          placeholder="Password"
+          type="password"
+          modifier="underbar"
+          float
+        >
+        </ons-input>
+      </p>
+
+      <p class="w-100 p-2">
+        <ons-button onclick="login()">Sign in</ons-button>
+      </p>
+    </div>
+  </div>
+</ons-page>

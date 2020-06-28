@@ -1,0 +1,144 @@
+<ons-page id="sales">
+  <ons-pull-hook modifier="material" id="sales-pull-hook"></ons-pull-hook>
+  <ons-list>
+    <ons-lazy-repeat id="sales-infinite-list"></ons-lazy-repeat>
+  </ons-list>
+
+  <ons-fab
+    ripple
+    position="bottom right"
+    onclick="loadPage('add-new-sale.html')"
+    id="salesaddNewsaleFabButton"
+  >
+    <ons-icon icon="md-plus"></ons-icon>
+  </ons-fab>
+
+  <script>
+    // if store is not set dont show add button
+    if (!user.get().store.id) {
+      document.querySelector("#salesaddNewsaleFabButton").style.display =
+        "none";
+    }
+
+    // populating sales reports(overviews) in localstorage
+    function retriveSalesOverview() {
+      showModal();
+      safari.getAllSalesOverview(user.get("key"), (e) => {
+        showModal();
+
+        if (typeof e != "object") {
+          toast("Service unavailable please try again later !");
+          return;
+        }
+
+        if (e.status != "success") {
+          if (typeof e.message == "object") {
+            e.message.map((message) => {
+              ons.notification.toast(message, { timeout: 1300 });
+            });
+            return;
+          }
+          ons.notification.toast(e.message, { timeout: 2000 });
+          return;
+        }
+        salesOverView.reset();
+        salesOverView.reset();
+        salesOverView.set(e.data);
+        showSalesOverview();
+        flashToast("Sync compleated!");
+      });
+    }
+
+    // populating infinate list with data
+    function showSalesOverview() {
+      const data = salesOverView.get();
+      const infiniteList = document.getElementById("sales-infinite-list");
+      infiniteList.delegate = {
+        createItemContent: function (i) {
+          const dateStr = data[i].date.replace(" ", "T");
+          const date = new Date(dateStr);
+          const dispalyDate = `${date.getFullYear()}/${date.getMonth()}/${date.getDate()}`;
+          const amount = data[i].amount;
+          return ons.createElement(
+            `<ons-list-item expandable>
+
+                  <ons-row>
+                    <ons-col>${dispalyDate}</ons-col>
+                    <ons-col class="text-center">${amount}</ons-col>
+                  </ons-row>
+
+                <div class="expandable-content">
+                  <ons-row class="pb-2">
+                    <ons-col>Walk-In</ons-col>
+                    <ons-col class="text-center">${data[i].walkin}</ons-col>
+                  </ons-row>
+                  <ons-row class="pt-2 pb-2">
+                    <ons-col>Conversion</ons-col>
+                    <ons-col class="text-center">${data[i].converted}</ons-col>
+                  </ons-row>
+                  <ons-row class="pt-2 pb-2">
+                    <ons-col>Quantity</ons-col>
+                    <ons-col class="text-center">${data[i].qnty}</ons-col>
+                  </ons-row>
+                  <ons-row class="pt-2 pb-2">
+                    <ons-col>American Tourister</ons-col>
+                    <ons-col class="text-center">${data[i].american_tourister}</ons-col>
+                  </ons-row>
+                  <ons-row class="pt-2 pb-2">
+                    <ons-col>VIP</ons-col>
+                    <ons-col class="text-center">${data[i].vip}</ons-col>
+                  </ons-row>
+                  <ons-row class="pt-2 pb-2">
+                    <ons-col>Total of Other Brands</ons-col>
+                    <ons-col class="text-center">${data[i].otherBrandTotal}</ons-col>
+                  </ons-row>
+
+                </div>
+              </ons-list-item>`
+          );
+        },
+        countItems: function () {
+          return data.length;
+        },
+      };
+
+      infiniteList.refresh();
+    }
+
+    function initSalesReport() {
+      if (!salesOverView.get()) return retriveSalesOverview(); // calling sales overview
+      setTimeout(showSalesOverview, 100);
+    }
+
+    initSalesReport(); // initialize the infinate list
+
+    // pull hook declaration
+
+    document
+      .getElementById("sales-pull-hook")
+      .addEventListener("changestate", function (event) {
+        let message = "";
+
+        switch (event.state) {
+          case "initial":
+            message = "Pull to refresh";
+            break;
+          case "preaction":
+            message = "Release";
+            break;
+          case "action":
+            message = "Loading...";
+            break;
+        }
+
+        document.getElementById("sales-pull-hook").innerHTML = message;
+      });
+
+    document.getElementById("sales-pull-hook").onAction = function (done) {
+      retriveSalesOverview();
+      setTimeout(done, 1000);
+    };
+
+    // retriveSalesOverview();
+  </script>
+</ons-page>
