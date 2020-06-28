@@ -85,6 +85,7 @@ ons.ready(() => {
 
     localStorage.pushNotification = 1;
   }
+
   cordova.plugins.notification.local.on("click", console.log);
   cordova.plugins.notification.local.getScheduled((e) => {
     if (e.length == 0) {
