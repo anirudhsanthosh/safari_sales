@@ -67,16 +67,20 @@ document.addEventListener("init", function (event) {
 
 ons.ready(() => {
   // setting local push notification
+  console.log(navigator);
+  if (navigator) {
+    //navigator.splashscreen.hide();
+  }
 
   if (!localStorage.pushNotification) {
     if (!cordova.plugins.notification.local) return;
     cordova.plugins.notification.local.schedule({
-      id: 1515151,
+      id: 1515151 * Math.round(Math.random * 1000),
       title: "Sale Report Reminder",
       text: "Please send sale report before 8.05 PM....",
-      foreground: true,
+      foreground: false,
       vibrate: true,
-      trigger: { every: { hour: 20, minute: 0 }, count: 1 },
+      trigger: { every: { hour: 20, minute: 0 }, count: 1000 },
     });
 
     localStorage.pushNotification = 1;
@@ -86,22 +90,22 @@ ons.ready(() => {
     if (e.length == 0) {
       //localStorage.removeItem("pushNotification");
       cordova.plugins.notification.local.schedule({
-        id: 1515151,
+        id: 1515151 * Math.round(Math.random * 1000),
         title: "Sale Report Reminder",
         text: "Please send sale report before 8.05 PM....",
         foreground: true,
         vibrate: true,
-        trigger: { every: { hour: 20, minute: 0 }, count: 1 },
+        trigger: { every: { hour: 20, minute: 0 }, count: 1000 },
       });
       console.log("notification list is empty");
     }
   });
   showModal();
-  const navigator = document.querySelector("#navigator");
+  const navigatr = document.querySelector("#navigator");
   if (isLoggedIn()) {
-    navigator.resetToPage("home.html");
+    navigatr.resetToPage("home.html");
   } else {
-    navigator.resetToPage("login.html");
+    navigatr.resetToPage("login.html");
   }
   // disable landscape
   window.screen.orientation.lock("portrait");
@@ -199,7 +203,9 @@ salesOverView.reset = function () {
 // target page functions
 
 function getTargetError() {
+  document.querySelector(".trgetChart").classList.add("d-none");
   const listItem = document.createElement("ons-list-item");
+
   listItem.innerHTML = `
                                 <div class="center">
                                   <span class="list-item__title">Target is not provided, Pull down to refresh.</span
@@ -238,8 +244,9 @@ function getTargetData() {
     }
 
     if (
-      (e.data.daily.length === 0 && e.data.monthly,
-      length === 0 && e.data.weekly.length === 0)
+      e.data.daily.length === 0 &&
+      e.data.monthly.length === 0 &&
+      e.data.weekly.length === 0
     ) {
       getTargetError();
     }
@@ -361,7 +368,7 @@ function getTargetData() {
                                     </div>
                                   </div>`;
       targetList.appendChild(listItem);
-
+      document.querySelector(".trgetChart").classList.remove("d-none");
       let chart = new Chart(ctx, {
         // The type of chart we want to create
         type: "doughnut",
@@ -534,7 +541,9 @@ class editPhone {
     this.input.classList.add("m-2");
 
     this.submit = document.createElement("ons-button");
-    this.submit.onclick = this.submitButtonClick;
+    this.submit.onclick = () => {
+      this.submitButtonClick();
+    };
     this.submit.classList.add("m-2");
     this.submit.innerHTML = "Edit";
 
@@ -550,7 +559,7 @@ class editPhone {
     this.dialogueContent.appendChild(this.submit);
     this.dialogueContent.appendChild(this.cancel);
   }
-  serverResponse = (e) => {
+  serverResponse(e) {
     showModal();
     if (typeof e != "object") {
       toast("Service unavailable please try again later !");
@@ -575,8 +584,8 @@ class editPhone {
     document.querySelector("#phone").innerText = e.data.phone;
     ons.notification.toast(e.message, { timeout: 2000 });
     hideEditDialogue();
-  };
-  submitButtonClick = () => {
+  }
+  submitButtonClick() {
     if (this.input.value.length !== 10)
       return ons.notification.toast("phone number must contain 10 digits", {
         timeout: 2000,
@@ -591,7 +600,7 @@ class editPhone {
       });
     showModal();
     safari.changePhone(user.get("key"), this.input.value, this.serverResponse);
-  };
+  }
 }
 
 class editEmail {
@@ -609,7 +618,9 @@ class editEmail {
     this.input.classList.add("m-2");
 
     this.submit = document.createElement("ons-button");
-    this.submit.onclick = this.submitButtonClick;
+    this.submit.onclick = () => {
+      this.submitButtonClick();
+    };
     this.submit.classList.add("m-2");
     this.submit.innerHTML = "Edit";
 
@@ -625,7 +636,7 @@ class editEmail {
     this.dialogueContent.appendChild(this.submit);
     this.dialogueContent.appendChild(this.cancel);
   }
-  serverResponse = (e) => {
+  serverResponse(e) {
     showModal();
     if (typeof e != "object") {
       toast("Service unavailable please try again later !");
@@ -650,15 +661,15 @@ class editEmail {
     document.querySelector("#email").innerText = e.data.email;
     ons.notification.toast(e.message, { timeout: 2000 });
     hideEditDialogue();
-  };
-  submitButtonClick = () => {
+  }
+  submitButtonClick() {
     if (this.input.value.length === 0)
       return ons.notification.toast("Email id cannot be blank", {
         timeout: 2000,
       });
     showModal();
     safari.changeEmail(user.get("key"), this.input.value, this.serverResponse);
-  };
+  }
 }
 
 class editPassword {
@@ -683,7 +694,9 @@ class editPassword {
     this.input.classList.add("m-2");
 
     this.submit = document.createElement("ons-button");
-    this.submit.onclick = this.submitButtonClick;
+    this.submit.onclick = () => {
+      this.submitButtonClick();
+    };
     this.submit.classList.add("m-2");
     this.submit.innerHTML = "Edit";
 
@@ -700,7 +713,7 @@ class editPassword {
     this.dialogueContent.appendChild(this.submit);
     this.dialogueContent.appendChild(this.cancel);
   }
-  serverResponse = (e) => {
+  serverResponse(e) {
     showModal();
     if (typeof e != "object") {
       toast("Service unavailable please try again later !");
@@ -719,8 +732,8 @@ class editPassword {
     }
     ons.notification.toast(e.message, { timeout: 2000 });
     hideEditDialogue();
-  };
-  submitButtonClick = () => {
+  }
+  submitButtonClick() {
     if (this.input.value.length === 0 || this.oldPassword.value.length === 0)
       return ons.notification.toast("Password cannot be blank", {
         timeout: 2000,
@@ -733,5 +746,5 @@ class editPassword {
       this.input.value,
       this.serverResponse
     );
-  };
+  }
 }

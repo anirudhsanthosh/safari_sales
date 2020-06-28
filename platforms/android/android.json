@@ -91,15 +91,15 @@
           "/*": [
             {
               "xml": "<uses-permission android:name=\"android.permission.INTERNET\" />",
-              "count": 586
+              "count": 651
             },
             {
               "xml": "<uses-permission android:name=\"android.permissions.NETWORK_ACCESS\" />",
-              "count": 585
+              "count": 650
             },
             {
               "xml": "<uses-permission android:name=\"android.permissions.ACCESS_NETWORK_STATE\" />",
-              "count": 585
+              "count": 650
             },
             {
               "xml": "<uses-permission android:name=\"android.permission.ACCESS_COARSE_LOCATION\" />",

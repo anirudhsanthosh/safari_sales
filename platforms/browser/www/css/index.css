@@ -3,7 +3,9 @@
   padding: 0px;
   margin: 0px;
 }
-
+.d-none {
+  display: none;
+}
 .d-flex {
   display: flex !important;
 }

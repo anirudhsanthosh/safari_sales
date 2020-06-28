@@ -57,7 +57,9 @@
         createItemContent: function (i) {
           const dateStr = data[i].date.replace(" ", "T");
           const date = new Date(dateStr);
-          const dispalyDate = `${date.getFullYear()}/${date.getMonth()}/${date.getDate()}`;
+          const dispalyDate = `${date.getFullYear()}/${
+            date.getMonth() + 1
+          }/${date.getDate()}`;
           const amount = data[i].amount;
           return ons.createElement(
             `<ons-list-item expandable>
