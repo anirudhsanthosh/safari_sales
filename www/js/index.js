@@ -8,6 +8,7 @@ const USER = "safari_user";
 const LOGIN = "safari_login";
 const SALES_OVERVIEW = "sales_overview";
 const user = {};
+
 /***********************
  *
  *        user and logging functions
