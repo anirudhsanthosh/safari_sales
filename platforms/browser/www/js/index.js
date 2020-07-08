@@ -8,6 +8,7 @@ const USER = "safari_user";
 const LOGIN = "safari_login";
 const SALES_OVERVIEW = "sales_overview";
 const user = {};
+
 /***********************
  *
  *        user and logging functions
@@ -75,27 +76,28 @@ ons.ready(() => {
   if (!localStorage.pushNotification) {
     if (!cordova.plugins.notification.local) return;
     cordova.plugins.notification.local.schedule({
-      id: 1515151,
+      id: 1515151 * Math.round(Math.random * 1000),
       title: "Sale Report Reminder",
       text: "Please send sale report before 8.05 PM....",
-      foreground: true,
+      foreground: false,
       vibrate: true,
-      trigger: { every: { hour: 20, minute: 0 }, count: 1 },
+      trigger: { every: { hour: 20, minute: 0 }, count: 1000 },
     });
 
     localStorage.pushNotification = 1;
   }
+
   cordova.plugins.notification.local.on("click", console.log);
   cordova.plugins.notification.local.getScheduled((e) => {
     if (e.length == 0) {
       //localStorage.removeItem("pushNotification");
       cordova.plugins.notification.local.schedule({
-        id: 1515151,
+        id: 1515151 * Math.round(Math.random * 1000),
         title: "Sale Report Reminder",
         text: "Please send sale report before 8.05 PM....",
         foreground: true,
         vibrate: true,
-        trigger: { every: { hour: 20, minute: 0 }, count: 1 },
+        trigger: { every: { hour: 20, minute: 0 }, count: 1000 },
       });
       console.log("notification list is empty");
     }
@@ -242,6 +244,12 @@ function getTargetData() {
     if (e.data.userData) {
       user.set(e.data.userData);
     }
+    // updating sale data
+    if (e.data.salesData) {
+      salesOverView.reset();
+      salesOverView.set(e.data.salesData);
+      showSalesOverview();
+    }
 
     if (
       e.data.daily.length === 0 &&
@@ -257,7 +265,7 @@ function getTargetData() {
                                       icon="md-chart"
                                       size="50px"
                                       class="list-item__icon"
-                                      style="color: rgb(41, 121, 255)"
+                                      style="color: rgb(255, 152, 0)"
                                     ></ons-icon>
                                   </div>
                                   <div class="center">
@@ -324,7 +332,7 @@ function getTargetData() {
                                       icon="md-chart"
                                       size="50px"
                                       class="list-item__icon"
-                                      style="color: rgb(41, 121, 255)"
+                                      style="color: rgb(255, 152, 0)"
                                     ></ons-icon>
                                   </div>
                                   <div class="center">
@@ -378,8 +386,8 @@ function getTargetData() {
           labels: ["Sales", "Remaining Target"],
           datasets: [
             {
-              backgroundColor: ["rgb(41, 121, 255)", "rgb(200, 200, 200)"],
-              borderColor: ["rgb(41, 121, 255)", "rgb(200, 200, 200)"],
+              backgroundColor: ["rgb(76, 175, 80)", "rgb(244, 67, 54)"],
+              borderColor: ["rgb(76, 175, 80)", "rgb(244, 67, 54)"],
               borderAlign: ["inner", "inner"],
               data: [
                 target.amount ? target.amount : 0,
@@ -394,11 +402,11 @@ function getTargetData() {
           title: {
             display: true,
             text: "Monthly Target",
-            fontColor: "rgb(41, 121, 255)",
+            fontColor: "rgb(255, 152, 0)",
             fontFamily: "Arial",
           },
           legend: {
-            display: true,
+            display: false,
             position: "right",
             align: "end",
           },
@@ -418,7 +426,7 @@ function getTargetData() {
                                       icon="md-chart"
                                       size="50px"
                                       class="list-item__icon"
-                                      style="color: rgb(41, 121, 255)"
+                                      style="color: rgb(255, 152, 0)"
                                     ></ons-icon>
                                   </div>
                                   <div class="center">

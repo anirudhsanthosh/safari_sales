@@ -32,6 +32,11 @@
         }
 
         if (e.status != "success") {
+          if (e.data) {
+            salesOverView.reset();
+            salesOverView.set(e.data);
+            showSalesOverview();
+          }
           if (typeof e.message == "object") {
             e.message.map((message) => {
               ons.notification.toast(message, { timeout: 1300 });
@@ -42,7 +47,6 @@
           return;
         }
         salesOverView.reset();
-        salesOverView.reset();
         salesOverView.set(e.data);
         showSalesOverview();
         flashToast("Sync compleated!");
@@ -52,6 +56,10 @@
     // populating infinate list with data
     function showSalesOverview() {
       const data = salesOverView.get();
+      if (!data.length) {
+        ons.notification.toast("No entries found.", { timeout: 6000 });
+        return;
+      }
       const infiniteList = document.getElementById("sales-infinite-list");
       infiniteList.delegate = {
         createItemContent: function (i) {
@@ -140,7 +148,5 @@
       retriveSalesOverview();
       setTimeout(done, 1000);
     };
-
-    // retriveSalesOverview();
   </script>
 </ons-page>
