@@ -14,6 +14,7 @@
   "license": "Apache-2.0",
   "dependencies": {
     "cordova-android": "^8.1.0",
+    "cordova-android-support-gradle-release": "^3.0.1",
     "cordova-browser": "^6.0.0",
     "cordova-custom-config": "^5.1.0",
     "cordova-plugin-androidx": "^2.0.0",
@@ -62,10 +63,12 @@
         "ANDROID_CRASHLYTICS_NDK_VERSION": "2.1.1",
         "ANDROID_GSON_VERSION": "2.8.6"
       },
-      "cordova-plugin-local-notification": {}
+      "cordova-plugin-local-notification": {},
+      "cordova-android-support-gradle-release": {
+        "ANDROID_SUPPORT_VERSION": "27.+"
+      }
     },
     "platforms": [
-      "android",
       "browser"
     ]
   }

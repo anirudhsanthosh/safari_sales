@@ -1,8 +1,34 @@
 <ons-page id="login">
   <script>
+    // initializing page
+    ons.getScriptPage().onInit = function () {
+      const carousel = document.getElementById("carousel");
+      carousel.setAttribute("animation", "true");
+      carousel.setAttribute(
+        "animation-options",
+        "{duration: 1,delay: 0.5,timing: 'ease-in'}"
+      );
+
+      let reverse = false;
+      const interval = setInterval(() => {
+        if (!reverse) {
+          carousel.next();
+          if (carousel.itemCount - 1 == carousel.getActiveIndex())
+            reverse = true;
+          return;
+        }
+        carousel.prev();
+        if (0 == carousel.getActiveIndex()) reverse = false;
+      }, 2500);
+
+      this.onDestroy = function () {
+        clearInterval(interval);
+      };
+    };
+
     // checking user is previously loged in or not
 
-    const login = () => {
+    document.getElementById("loginButton").onclick = () => {
       showModal();
       const username = document.querySelector("#username").value;
       const password = document.querySelector("#password").value;
@@ -34,33 +60,73 @@
     };
   </script>
   <div
-    class="d-flex w-100 h-100 justify-content-center align-items-center flex-column"
+    class="d-flex w-100 h-100 justify-content-center align-items-center flex-column p-4"
   >
-    <div class="login-logo"></div>
-    <div class="w-100 text-center">
-      <p class="w-100 p-2">
-        <ons-input
-          id="username"
-          placeholder="Username"
-          modifier="underbar"
-          float
-        ></ons-input>
-      </p>
+    <div
+      class="d-flex justify-content-center align-items-center flex-column w-100 p-3 loginOverlay"
+    >
+      <div class="login-logo m-3"></div>
+      <div class="w-100 text-center">
+        <p class="w-100 p-2">
+          <ons-input
+            id="username"
+            placeholder="Username"
+            modifier="underbar"
+            float
+          ></ons-input>
+        </p>
 
-      <p class="w-100 p-2">
-        <ons-input
-          id="password"
-          placeholder="Password"
-          type="password"
-          modifier="underbar"
-          float
-        >
-        </ons-input>
-      </p>
+        <p class="w-100 p-2">
+          <ons-input
+            id="password"
+            placeholder="Password"
+            type="password"
+            modifier="underbar"
+            float
+          >
+          </ons-input>
+        </p>
 
-      <p class="w-100 p-2">
-        <ons-button onclick="login()">Sign in</ons-button>
-      </p>
+        <p class="w-100 p-2">
+          <ons-button onclick="login()" id="loginButton" modifier="material"
+            >Sign in</ons-button
+          >
+        </p>
+      </div>
     </div>
+  </div>
+  <div class="w-100 h-100 loginCarousel">
+    <ons-carousel
+      fullscreen
+      auto-scroll
+      overscrollable
+      animation="true"
+      animation-options="{duration: 0.2, delay: 1, timing: 'ease-in'}"
+      id="carousel"
+    >
+      <ons-carousel-item style="background-color: #085078;"
+        ><img class="carouselImage" src="images/1.jpg" />
+      </ons-carousel-item>
+      <ons-carousel-item style="background-color: #373b44;"
+        ><img class="carouselImage" src="images/2.jpg"
+      /></ons-carousel-item>
+      <ons-carousel-item style="background-color: #d38312;"
+        ><img class="carouselImage" src="images/3.jpg"
+      /></ons-carousel-item>
+      <ons-carousel-item style="background-color: #d38312;"
+        ><img class="carouselImage" src="images/4.jpg"
+      /></ons-carousel-item>
+
+      <ons-carousel-item style="background-color: #d38312;"
+        ><img class="carouselImage" src="images/5.jpg"
+      /></ons-carousel-item>
+
+      <ons-carousel-item style="background-color: #d38312;"
+        ><img class="carouselImage" src="images/6.jpg"
+      /></ons-carousel-item>
+      <ons-carousel-item style="background-color: #d38312;"
+        ><img class="carouselImage" src="images/7.jpg"
+      /></ons-carousel-item>
+    </ons-carousel>
   </div>
 </ons-page>

@@ -105,7 +105,7 @@ ons.ready(() => {
   showModal();
   const navigatr = document.querySelector("#navigator");
   if (isLoggedIn()) {
-    navigatr.resetToPage("home.html");
+    navigatr.resetToPage("dashboard.html");
   } else {
     navigatr.resetToPage("login.html");
   }
