@@ -115,10 +115,10 @@ module.exports.metadata =
     "cordova-plugin-androidx": "2.0.0",
     "cordova-plugin-androidx-adapter": "1.1.1",
     "cordova-plugin-firebasex": "9.1.2-cli",
+    "cordova-android-support-gradle-release": "3.0.1",
     "cordova-plugin-device": "2.0.3",
     "cordova-plugin-badge": "0.8.8",
-    "cordova-plugin-local-notification": "0.9.0-beta.2",
-    "cordova-android-support-gradle-release": "3.0.1"
+    "cordova-plugin-local-notification": "0.9.0-beta.2"
 }
 // BOTTOM OF METADATA
 });

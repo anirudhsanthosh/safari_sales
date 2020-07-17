@@ -12,12 +12,19 @@
       let reverse = false;
       const interval = setInterval(() => {
         if (!reverse) {
-          carousel.next();
-          if (carousel.itemCount - 1 == carousel.getActiveIndex())
-            reverse = true;
-          return;
+          try {
+            carousel.next();
+            if (carousel.itemCount - 1 == carousel.getActiveIndex())
+              reverse = true;
+            return;
+          } catch (e) {}
         }
-        carousel.prev();
+        try {
+          carousel.prev();
+        } catch (e) {
+          //
+        }
+
         if (0 == carousel.getActiveIndex()) reverse = false;
       }, 2500);
 
@@ -47,7 +54,7 @@
 
           if (isLoggedIn()) {
             const navigator = document.querySelector("#navigator");
-            navigator.resetToPage("home.html");
+            navigator.resetToPage("dashboard.html");
             return;
           }
           notification("Something went wrong please try again ");

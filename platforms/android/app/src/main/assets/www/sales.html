@@ -1,20 +1,41 @@
 <ons-page id="sales">
+  <ons-toolbar>
+    <div class="center">SALES</div>
+    <div class="left">
+      <ons-back-button
+        modifier="material"
+        style="color: rgb(74, 41, 216);"
+      ></ons-back-button>
+    </div>
+  </ons-toolbar>
   <ons-pull-hook modifier="material" id="sales-pull-hook"></ons-pull-hook>
   <ons-list>
     <ons-lazy-repeat id="sales-infinite-list"></ons-lazy-repeat>
   </ons-list>
+  <div id="after-list" class="d-none" style="margin: 20px; text-align: center;">
+    <ons-icon icon="fa-spinner" size="26px" spin></ons-icon>
+  </div>
 
   <ons-fab
     ripple
     position="bottom right"
     onclick="loadPage('add-new-sale.html')"
     id="salesaddNewsaleFabButton"
+    style="background-color: rgb(74, 41, 216);"
   >
-    <ons-icon icon="md-plus"></ons-icon>
+    <ons-icon icon="md-plus" style="color: rgb(0, 210, 223);"></ons-icon>
   </ons-fab>
 
   <script>
-    // if store is not set dont show add button
+    // initializing page
+    ons.getScriptPage().onInit = function () {
+      this.onInfiniteScroll = (done) => {
+        document.querySelector("#after-list").classList.remove("d-none"); // spinner which will shows whenlist is over
+        extendSalesOverview(done);
+      };
+    };
+
+    // if store is not set don't show add button
     if (!user.get().store.id) {
       document.querySelector("#salesaddNewsaleFabButton").style.display =
         "none";
@@ -25,6 +46,7 @@
       showModal();
       safari.getAllSalesOverview(user.get("key"), (e) => {
         showModal();
+        document.querySelector("#after-list").classList.add("d-none");
 
         if (typeof e != "object") {
           toast("Service unavailable please try again later !");
@@ -46,69 +68,174 @@
           ons.notification.toast(e.message, { timeout: 2000 });
           return;
         }
-        salesOverView.reset();
-        salesOverView.set(e.data);
+        console.log(e.offset);
+
+        switch (e.offset != 0) {
+          case true:
+            salesOverView.set(e.data, { reverse: true });
+            break;
+
+          default:
+            salesOverView.reset();
+            salesOverView.set(e.data);
+            break;
+        }
+
         showSalesOverview();
-        flashToast("Sync compleated!");
+        flashToast("Sales data synchronization has compleated.");
       });
+    }
+
+    // downloading next set data from server
+    function extendSalesOverview(done) {
+      const oldIndex = salesOverView.get().length;
+      safari.getAllSalesOverview(
+        user.get("key"),
+        (e) => {
+          document.querySelector("#after-list").classList.add("d-none");
+          if (typeof e != "object") return;
+          if (e.status != "success") return;
+          salesOverView.set(e.data, { reverse: true });
+          showSalesOverview(oldIndex);
+          if (e.data.length === 15) done(); // if this is 15 we have more data in the server but lessthan 15 means data is over
+        },
+        oldIndex
+      );
     }
 
     // populating infinate list with data
     function showSalesOverview() {
       const data = salesOverView.get();
+
       if (!data.length) {
-        ons.notification.toast("No entries found.", { timeout: 6000 });
+        document.querySelector("#sales").classList.add("empty");
+        toast("Sales data is missing, Pull down to refresh");
         return;
       }
+
+      // removing empty class from sales page
+      document.querySelector("#sales").classList.remove("empty");
       const infiniteList = document.getElementById("sales-infinite-list");
       infiniteList.delegate = {
         createItemContent: function (i) {
           const dateStr = data[i].date.replace(" ", "T");
           const date = new Date(dateStr);
-          const dispalyDate = `${date.getFullYear()}/${
-            date.getMonth() + 1
-          }/${date.getDate()}`;
+          const dispalyDate = `${
+            date.getDate().toString().length === 2
+              ? date.getDate()
+              : "0" + date.getDate()
+          }-${date.getMonth() + 1}-${date.getFullYear()}`;
           const amount = data[i].amount;
-          return ons.createElement(
-            `<ons-list-item expandable>
+          // return ons.createElement("<div>1</div>");
+
+          const element = ons.createElement(
+            `<div class="sale-list-main"><ons-list-item expandable >
 
                   <ons-row>
-                    <ons-col>${dispalyDate}</ons-col>
-                    <ons-col class="text-center">${amount}</ons-col>
+                    <ons-col>
+                        <ons-icon
+                          icon="md-calendar"
+                          class="mr-2"
+                          style="color:rgb(74, 41, 216);"
+                        ></ons-icon>
+                      ${dispalyDate}
+                    </ons-col>
+                    <ons-col class="text-center"><span class="rupee" style="color:rgb(0, 210, 223);">${amount}</span></ons-col>
                   </ons-row>
 
-                <div class="expandable-content">
-                  <ons-row class="pb-2">
-                    <ons-col>Walk-In</ons-col>
+                <div class="expandable-content ">
+                  <ons-row class="">
+                    <ons-col>
+                      <ons-icon
+                          icon="md-walk"
+                          class="mr-2 list-icon"
+                          style="color:rgb(255, 54, 147);"
+                        ></ons-icon>
+                      Walk-In
+                    </ons-col>
                     <ons-col class="text-center">${data[i].walkin}</ons-col>
                   </ons-row>
                   <ons-row class="pt-2 pb-2">
-                    <ons-col>Conversion</ons-col>
-                    <ons-col class="text-center">${data[i].converted}</ons-col>
+                    <ons-col>
+                      <ons-icon
+                          icon="md-swap"
+                          class="mr-2 list-icon"
+                          style="color:rgb(255, 54, 147);"
+                        ></ons-icon>
+                      Conversion
+                    </ons-col>
+                    <ons-col class="text-center">
+                      <span class="" style="">
+                        ${data[i].converted}
+                      </span>
+                    </ons-col>
                   </ons-row>
                   <ons-row class="pt-2 pb-2">
-                    <ons-col>Quantity</ons-col>
+                    <ons-col>
+                      <ons-icon
+                          icon="md-star-outline"
+                          class="mr-2 list-icon"
+                          style="color:rgb(255, 54, 147);"
+                        ></ons-icon>
+                      Quantity
+                    </ons-col>
                     <ons-col class="text-center">${data[i].qnty}</ons-col>
                   </ons-row>
                   <ons-row class="pt-2 pb-2">
-                    <ons-col>American Tourister</ons-col>
-                    <ons-col class="text-center">${data[i].american_tourister}</ons-col>
+                    <ons-col>
+                      <span class="list-icon   mr-2">
+                      <span class="icon-at" style="color:rgb(255, 54, 147);font-size:0.6em"></span>
+                      </span> 
+                      American Tourister
+                    </ons-col>
+                    <ons-col class="text-center">
+                      <span class="rupee" style="">
+                        ${data[i].american_tourister}
+                      </span>
+                    </ons-col>
                   </ons-row>
                   <ons-row class="pt-2 pb-2">
-                    <ons-col>VIP</ons-col>
-                    <ons-col class="text-center">${data[i].vip}</ons-col>
+                    <ons-col>
+                      <span class="list-icon   mr-2">
+                      <span class="icon-vip" style="color:rgb(255, 54, 147);font-size:1em"></span>
+                      </span>
+                      VIP
+                    </ons-col>
+                    <ons-col class="text-center">
+                      <span class="rupee" style="">
+                          ${data[i].vip}
+                        </span>
+                      </ons-col>
                   </ons-row>
                   <ons-row class="pt-2 pb-2">
-                    <ons-col>Total of Other Brands</ons-col>
-                    <ons-col class="text-center">${data[i].otherBrandTotal}</ons-col>
+                    <ons-col>
+                      <ons-icon
+                          icon="md-group-work"
+                          class="mr-2 list-icon"
+                          style="color:rgb(255, 54, 147);"
+                        ></ons-icon>
+                        <span style="font-size:0.8em;">
+                      Total of Other Brands</span>
+                    </ons-col>
+                    <ons-col class="text-center">
+                      <span class="rupee" style="">
+                        ${data[i].otherBrandTotal}</ons-col>
+                      </span>
                   </ons-row>
 
                 </div>
-              </ons-list-item>`
+              </ons-list-item></div>
+              `
           );
+          //console.log(element);
+          return element;
         },
         countItems: function () {
           return data.length;
+        },
+        destroyItem: function (index, element) {
+          // console.log(element);
+          // Remove event listeners, etc. here to avoid memory leaks.
         },
       };
 
@@ -117,7 +244,8 @@
 
     function initSalesReport() {
       if (!salesOverView.get()) return retriveSalesOverview(); // calling sales overview
-      setTimeout(showSalesOverview, 100);
+      // setTimeout(showSalesOverview, 100);
+      showSalesOverview();
     }
 
     initSalesReport(); // initialize the infinate list

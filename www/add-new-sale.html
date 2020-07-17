@@ -1,103 +1,215 @@
 <ons-page id="add-new-sale">
   <ons-toolbar>
-    <div class="center">Add New Sale</div>
+    <div class="center">Add Sale</div>
     <div class="left">
       <ons-back-button modifier="material"></ons-back-button>
     </div>
+    <div class="right text-center">
+      
+        <ons-icon icon="md-help" size="23px" style="color:rgb(74, 41, 216) !important;" onclick="showPopover(this)"> </ons-icon>
+     
+    </div>
   </ons-toolbar>
+  <ons-popover cancelable id="helpPopover">
+    <div style="padding: 10px; text-align: left;">
+      <h4 class="pb-1">Amount</h4>
+      <p class="pb-1 pl-1 text-muted">
+        Total of Customer Retail Price of safari.
+      </p>
+      <h4 class="pb-1">Walk-in</h4>
+      <p class="pb-1 pl-1 text-muted">
+        Total number of customers came to section.
+      </p>
+      <h4 class="pb-1">Conversion</h4>
+      <p class="pb-1 pl-1 text-muted">
+        Total number of customers who billed product atleast one product of any brand from section.
+      </p>
+
+      <h4 class="pb-1">Quantity</h4>
+      <p class="pb-1 pl-1 text-muted">
+        Total number of products of safari billed.
+      </p>
+
+      <h4 class="pb-1">American tourister</h4>
+      <p class="pb-1 pl-1 text-muted">
+        Total of Customer Retail Price of American Tourister.
+      </p>
+
+      <h4 class="pb-1">VIP</h4>
+      <p class="pb-1 pl-1 text-muted">
+        Total of Customer Retail Price of VIP.
+      </p>
+
+      <h4 class="pb-1">Total of other brand sale</h4>
+      <p class="pb-1 pl-1 text-muted">
+        Total of Customer Retail Price of other brands excluding vip and American Tourister.
+      </p>
+
+
+      <!-- <p class="pb-1 pl-1 text-muted">
+        <ons-button onclick="hidePopover()">Close</ons-button>
+      </p> -->
+    </div>
+  </ons-popover>
 
   <div class="d-flex h-100 align-items-center">
     <div class="w-100">
       <ons-card>
         <div class="content">
-          <!-- <ons-row>
-            <ons-col width="50px">
-              <ons-icon icon="fa-twitter"></ons-icon>
-            </ons-col>
-            <ons-col>Text</ons-col>
-          </ons-row> -->
           <ons-list>
-            <!-- <ons-list-header>Amount</ons-list-header> -->
+            <ons-list-item>
+              <ons-row class="">
+                <ons-col width="20px" class="d-flex align-items-center">
+                  <ons-icon
+                    style="color: rgb(0, 118, 255);"
+                    icon="md-money"
+                    class="mr-2"
+                    size="20px"
+                  ></ons-icon>
+                </ons-col>
+                <ons-col class="">
+                  <ons-input
+                    id="salesAmount"
+                    modifier="underbar"
+                    placeholder="Amount"
+                    type="number"
+                    float
+                    class="w-100"
+                  ></ons-input>
+                </ons-col>
+              </ons-row>
+            </ons-list-item>
+
             <ons-list-item
-              ><ons-input
-                id="salesAmount"
-                modifier="underbar"
-                placeholder="Amount"
-                type="number"
-                float
-                class="w-100"
-              ></ons-input
-            ></ons-list-item>
-            <!-- <ons-list-header>Contact Number</ons-list-header> -->
-            <ons-list-item
-              ><ons-input
-                id="salesWalkin"
-                type="number"
-                modifier="underbar"
-                placeholder="Walk in"
-                float
-                class="w-100"
-              ></ons-input
-            ></ons-list-item>
-            <ons-list-item>
-              <ons-input
-                id="salesConversion"
-                modifier="underbar"
-                type="number"
-                placeholder="Conversion"
-                float
-                class="w-100"
-              ></ons-input>
-            </ons-list-item>
-            <ons-list-item>
-              <ons-input
-                id="salesQnty"
-                modifier="underbar"
-                type="number"
-                placeholder="Quantity"
-                float
-                class="w-100"
               >
-              </ons-input>
-            </ons-list-item>
+              <ons-row class="">
+                <ons-col width="20px" class="d-flex align-items-center">
+                  <ons-icon style="color: rgb(0, 118, 255);" icon="md-walk" class="mr-2" size="20px"></ons-icon>
+                </ons-col>
+                <ons-col class="">
+                  <ons-input id="salesWalkin" type="number" modifier="underbar" placeholder="Walk in" float class="w-100"></ons-input>
+              </ons-row>
+              
+          </ons-list-item>
+
             <ons-list-item>
-              <ons-input
-                id="atSale"
-                modifier="underbar"
-                type="number"
-                placeholder="American Tourister"
-                float
-                class="w-100"
-              >
-              </ons-input>
-            </ons-list-item>
-            <ons-list-item>
-              <ons-input
-                id="vipSale"
-                modifier="underbar"
-                type="number"
-                placeholder="VIP "
-                float
-                class="w-100"
-              >
-              </ons-input>
-            </ons-list-item>
-            <ons-list-item>
-              <ons-input
-                id="otherSale"
-                modifier="underbar"
-                type="number"
-                placeholder="Total of other brand sale"
-                float
-                class="w-100"
-              >
-              </ons-input>
+              <ons-row class="">
+                <ons-col width="20px" class="d-flex align-items-center">
+                  <ons-icon
+                    style="color: rgb(0, 118, 255);"
+                    icon="md-swap"
+                    class="mr-2"
+                    size="20px"
+                  ></ons-icon>
+                </ons-col>
+                <ons-col class="">
+                  <ons-input
+                    id="salesConversion"
+                    modifier="underbar"
+                    type="number"
+                    placeholder="Conversion"
+                    float
+                    class="w-100"
+                  >
+                  </ons-input>
+                </ons-col>
+              </ons-row>
             </ons-list-item>
 
             <ons-list-item>
-              <ons-button style="margin-left: auto;" onclick="saveSales()"
-                >Save</ons-button
-              >
+              <ons-row class="">
+                <ons-col width="20px" class="d-flex align-items-center">
+                  <ons-icon
+                    style="color: rgb(0, 118, 255);"
+                    icon="md-star-outline"
+                    class="mr-2"
+                    size="20px"
+                  ></ons-icon>
+                </ons-col>
+                <ons-col class="">
+                  <ons-input
+                    id="salesQnty"
+                    modifier="underbar"
+                    type="number"
+                    placeholder="Quantity"
+                    float
+                    class="w-100"
+                  >
+                  </ons-input>
+                </ons-col>
+              </ons-row>
+            </ons-list-item>
+
+            <ons-list-item>
+              <ons-row class="">
+                <ons-col width="20px" class="d-flex align-items-center">
+                  <span class="list-icon   mr-2">
+                    <span class="icon-at" style="color:rgb(0, 118, 255);font-size:0.8em"></span>
+                  </span>
+                  
+                </ons-col>
+                <ons-col class="">
+                  <ons-input
+                    id="atSale"
+                    modifier="underbar"
+                    type="number"
+                    placeholder="American Tourister"
+                    float
+                    class="w-100"
+                  >
+                  </ons-input>
+                </ons-col>
+              </ons-row>
+            </ons-list-item>
+
+            <ons-list-item>
+              <ons-row class="">
+                <ons-col width="20px" class="d-flex align-items-center">
+                  <span class="list-icon   mr-2">
+                    <span class="icon-vip" style="color:rgb(0, 118, 255);font-size:1.3em"></span>
+                  </span>
+                </ons-col>
+                <ons-col class="">
+                  <ons-input
+                    id="vipSale"
+                    modifier="underbar"
+                    type="number"
+                    placeholder="VIP "
+                    float
+                    class="w-100"
+                  ></ons-input>
+                </ons-col>
+              </ons-row>
+            </ons-list-item>
+
+            <ons-list-item>
+              <ons-row class="">
+                <ons-col width="20px" class="d-flex align-items-center">
+                  <ons-icon
+                    style="color: rgb(0, 118, 255);"
+                    icon="md-group-work"
+                    class="mr-2"
+                    size="20px"
+                  ></ons-icon>
+                </ons-col>
+                <ons-col class="">
+                  <ons-input
+                    id="otherSale"
+                    modifier="underbar"
+                    type="number"
+                    placeholder="Total of other brand sale"
+                    float
+                    class="w-100"
+                  ></ons-input>
+                </ons-col>
+              </ons-row>
+            </ons-list-item>
+
+            <ons-list-item>
+              <ons-button style="margin-left: auto;" onclick="saveSales()">
+                <ons-icon icon="md-plus"></ons-icon>
+                Add
+              </ons-button>
             </ons-list-item>
           </ons-list>
         </div>
@@ -124,7 +236,7 @@
         vip.length === 0 ||
         totalOfOther.length === 0
       ) {
-        toast("please fill all fields !");
+        toast("please fill all the fields !");
         showModal();
         return;
       }
@@ -173,5 +285,16 @@
         }
       );
     }
+    var showPopover = function (target) {
+        document
+          .getElementById('helpPopover')
+          .show(target);
+      };
+
+      var hidePopover = function () {
+        document
+          .getElementById('helpPopover')
+          .hide();
+      };
   </script>
 </ons-page>

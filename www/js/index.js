@@ -61,18 +61,20 @@ const logOut = () => {
  *
  *
  */
-
+// event listner for all page initialization events
 document.addEventListener("init", function (event) {
   // console.log("init called");
 });
 
+// ons ready event entry point of app
+
 ons.ready(() => {
-  // setting local push notification
   console.log(navigator);
   if (navigator) {
-    //navigator.splashscreen.hide();
+    navigator.splashscreen.hide();
   }
 
+  // setting local push notification
   if (!localStorage.pushNotification) {
     if (!cordova.plugins.notification.local) return;
     cordova.plugins.notification.local.schedule({
@@ -97,25 +99,33 @@ ons.ready(() => {
         text: "Please send sale report before 8.05 PM....",
         foreground: true,
         vibrate: true,
-        trigger: { every: { hour: 20, minute: 0 }, count: 1000 },
+        trigger: {
+          every: { hour: 20, minute: 0 },
+          count: 1000,
+        },
       });
       console.log("notification list is empty");
     }
   });
-  showModal();
+
+  // selecting ons navigator to load page loginpage or dashboard
+
   const navigatr = document.querySelector("#navigator");
   if (isLoggedIn()) {
     navigatr.resetToPage("dashboard.html");
   } else {
     navigatr.resetToPage("login.html");
   }
-  // disable landscape
-  window.screen.orientation.lock("portrait");
-});
 
+  // disable landscapemode
+  window.screen.orientation.lock("portrait");
+}); // end of ons initialization
+
+// function for showing side menu
 const openMenu = () => {
   document.querySelector("#menu").open();
 };
+
 // controlling page title while changing tabs
 document.addEventListener("prechange", ({ target, tabItem }) => {
   console.log("prechange called");
@@ -142,6 +152,7 @@ const isJson = function (str) {
   return response;
 };
 
+// changing pages
 const loadPage = (page) => {
   document.querySelector("#menu").close();
   document
@@ -150,14 +161,14 @@ const loadPage = (page) => {
 };
 
 const showModal = function () {
-  var modal = document.querySelector("ons-modal");
+  var modal = document.querySelector("ons-modal#mainModal");
   if (modal.visible) {
     modal.hide();
     return;
   }
   modal.show();
 };
-showModal();
+
 const notification = (message) => {
   ons.notification.alert(message);
 };
@@ -169,7 +180,8 @@ const toast = (message) => {
 };
 
 const flashToast = function (message = "", options = { timeout: 2300 }) {
-  ons.notification.toast(message, options);
+  const toast = ons.notification.toast(message, options);
+  toast.then((e) => {}).catch((e) => {});
 };
 
 /**************************
@@ -179,13 +191,14 @@ const flashToast = function (message = "", options = { timeout: 2300 }) {
  */
 
 const salesOverView = {};
-salesOverView.set = (obj) => {
+salesOverView.set = (obj, options = { reverse: false }) => {
   if (typeof obj != "object") return false;
   let sales = [];
   if (isJson(localStorage.getItem(SALES_OVERVIEW))) {
     sales = isJson(localStorage.getItem(SALES_OVERVIEW));
   }
-  sales = [...obj, ...sales];
+  if (options.reverse) sales = [...sales, ...obj];
+  if (!options.reverse) sales = [...obj, ...sales];
   localStorage.setItem(SALES_OVERVIEW, JSON.stringify(sales));
   return sales;
 };
@@ -206,6 +219,7 @@ salesOverView.reset = function () {
 
 function getTargetError() {
   document.querySelector(".trgetChart").classList.add("d-none");
+  document.querySelector("#target").classList.add("empty");
   const listItem = document.createElement("ons-list-item");
 
   listItem.innerHTML = `
@@ -218,9 +232,12 @@ function getTargetError() {
 
 function getTargetData() {
   showModal();
+  getTargetError();
+  document.querySelector("#target").classList.remove("empty");
   safari.getAllTargets(user.get("key"), (e) => {
     showModal();
     targetList.innerHTML = "";
+
     if (typeof e != "object") {
       toast("Service unavailable please try again later !");
       getTargetError();
@@ -240,17 +257,6 @@ function getTargetData() {
       return;
     }
 
-    // updating user data too
-    if (e.data.userData) {
-      user.set(e.data.userData);
-    }
-    // updating sale data
-    if (e.data.salesData) {
-      salesOverView.reset();
-      salesOverView.set(e.data.salesData);
-      showSalesOverview();
-    }
-
     if (
       e.data.daily.length === 0 &&
       e.data.monthly.length === 0 &&
@@ -258,6 +264,7 @@ function getTargetData() {
     ) {
       getTargetError();
     }
+
     e.data.daily.map((target) => {
       const listItem = document.createElement("ons-list-item");
       listItem.innerHTML = `<div class="left">
@@ -265,7 +272,7 @@ function getTargetData() {
                                       icon="md-chart"
                                       size="50px"
                                       class="list-item__icon"
-                                      style="color: rgb(255, 152, 0)"
+                                      style="color: rgb(74, 41, 216)"
                                     ></ons-icon>
                                   </div>
                                   <div class="center">
@@ -310,6 +317,7 @@ function getTargetData() {
                                   </div>`;
       targetList.appendChild(listItem);
     });
+
     e.data.monthly.map((target) => {
       const date = new Date(Date.parse(target.period));
       const monthNames = [
@@ -332,7 +340,7 @@ function getTargetData() {
                                       icon="md-chart"
                                       size="50px"
                                       class="list-item__icon"
-                                      style="color: rgb(255, 152, 0)"
+                                      style="color: rgb(74, 41, 216)"
                                     ></ons-icon>
                                   </div>
                                   <div class="center">
@@ -402,7 +410,7 @@ function getTargetData() {
           title: {
             display: true,
             text: "Monthly Target",
-            fontColor: "rgb(255, 152, 0)",
+            fontColor: "rgb(74, 41, 216)",
             fontFamily: "Arial",
           },
           legend: {
@@ -426,7 +434,7 @@ function getTargetData() {
                                       icon="md-chart"
                                       size="50px"
                                       class="list-item__icon"
-                                      style="color: rgb(255, 152, 0)"
+                                      style="color: rgb(74, 41, 216)"
                                     ></ons-icon>
                                   </div>
                                   <div class="center">
@@ -756,3 +764,118 @@ class editPassword {
     );
   }
 }
+
+// progress bar for dashboard
+
+class ProgressRing extends HTMLElement {
+  constructor() {
+    super();
+    const parentWidth = this.parentNode.clientWidth;
+    const stroke = this.getAttribute("stroke");
+    const radius = this.getAttribute("radius");
+
+    const normalizedRadius = radius - stroke * 2;
+    this._circumference = normalizedRadius * 2 * Math.PI;
+
+    this._root = this.attachShadow({ mode: "open" });
+    this._root.innerHTML = `
+    
+      <svg
+        viewBox="0 0 100 100" style="width:100%;height:100%"
+       >
+         
+         <circle
+           stroke-dasharray="${this._circumference}"
+           style="stroke-dashoffset:0"
+           stroke-width="${stroke}"
+           fill="transparent"
+           r="${normalizedRadius}"
+           cx="${radius}"
+           cy="${radius}"
+        />
+         
+         <circle
+           id="bar"
+           stroke-dasharray="${this._circumference} ${this._circumference}"
+           style="stroke-dashoffset:${this._circumference}"
+           stroke-width="${stroke}"
+           fill="transparent"
+           r="${normalizedRadius}"
+           cx="${radius}"
+           cy="${radius}"
+        />
+
+        <text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle">0%</text>
+      </svg>
+
+      <style>
+        circle {
+          stroke-dashoffset: 0;
+          transition: stroke-dashoffset 1s linear;
+          stroke: rgb(39,19,147);
+          stroke-width: 1em;
+          transform: rotate(-90deg);
+          transform-origin: 50% 50%;
+        }
+        
+        svg #bar {
+                  stroke: rgb(51,162,254);
+                  stroke-dashoffset: 400;
+                }
+        svg text {
+                  fill: #fff;
+                  /*stroke-width:1;
+                  stroke: #fff;*/
+                  font-size:1.8em;
+                  font-weight:bold;
+                }
+        .animate{
+            animation: spin 0.8s ;
+        }
+
+        @keyframes spin {
+                        from {
+                            transform: rotate(-90deg);
+                          }
+                        to {
+                              transform: rotate(270deg);
+                            }
+                        }
+      </style>
+    `;
+    const self = this;
+    setTimeout(() => {
+      self.animate();
+    }, 150);
+  }
+
+  setProgress(percent) {
+    const actualPercent = percent;
+    percent = percent > 100 ? 100 : percent <= 0 ? 0.1 : percent;
+    const offset = this._circumference - (percent / 100) * this._circumference;
+    const circle = this._root.querySelector("#bar");
+    circle.style.strokeDashoffset = offset;
+    const text = this._root.querySelector("text");
+    text.innerHTML = `${actualPercent}%`;
+  }
+
+  static get observedAttributes() {
+    return ["progress"];
+  }
+
+  attributeChangedCallback(name, oldValue, newValue) {
+    if (name === "progress") {
+      this.setProgress(newValue);
+    }
+  }
+
+  animate() {
+    this._root.querySelector("#bar").classList.remove("animate");
+    const self = this;
+    setTimeout(() => {
+      self._root.querySelector("#bar").classList.add("animate");
+    }, 100);
+  }
+}
+// defining new progress element
+window.customElements.define("progress-ring", ProgressRing);

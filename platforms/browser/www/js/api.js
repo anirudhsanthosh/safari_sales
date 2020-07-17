@@ -342,16 +342,21 @@ let Safari = function () {
           callback({ status: "error", message: ["internal error"] });
         });
     },
-    getAllSalesOverview: function (key = "", callback = (e) => console.log(e)) {
+    getAllSalesOverview: function (
+      key = "",
+      callback = (e) => console.log(e),
+      offset = 0
+    ) {
       if (key.length < 8) {
         callback({ status: "error", message: ["check key"] });
         return;
       }
       const url = `${safari.url}/view_sales_overview.php`;
+
       axios({
         method: "post",
         url: url,
-        data: JSON.stringify({ key }),
+        data: JSON.stringify({ key, offset }),
       })
         .then((response) => {
           const { data } = response;
@@ -513,6 +518,31 @@ let Safari = function () {
         })
         .catch((error) => {
           callback({ status: "error", message: ["internal error"] });
+        });
+    },
+    getDashboardData: function (key = "", callback = (e) => console.log(e)) {
+      if (key.length < 8) {
+        callback({ status: "error", message: ["check key"] });
+        return;
+      }
+      const url = `${safari.url}/getDashboardData.php`;
+      axios({
+        method: "post",
+        url: url,
+        data: JSON.stringify({ key }),
+      })
+        .then((response) => {
+          const { data } = response;
+          callback(data);
+        })
+        .catch((error) => {
+          console.log(error);
+          callback({
+            status: "error",
+            message: [
+              "Unable to contact server, Please check network connection",
+            ],
+          });
         });
     },
   };

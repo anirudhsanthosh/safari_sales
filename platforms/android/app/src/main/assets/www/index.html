@@ -3,7 +3,7 @@
   <head>
     <meta
       http-equiv="Content-Security-Policy"
-      content="default-src 'self' * gap: ws: https://ssl.gstatic.com;style-src 'self' 'unsafe-inline' data: blob:; media-src *;img-src * 'self' data: content:; script-src * 'unsafe-inline' 'unsafe-eval' data: blob:;"
+      content="default-src 'self' * gap: ws: https://ssl.gstatic.com;style-src 'self' 'unsafe-inline' data: blob:; media-src *;img-src * 'self' data: content:;script-src * 'unsafe-inline' 'unsafe-eval' data: blob:; "
     />
 
     <meta name="format-detection" content="telephone=no" />
@@ -15,6 +15,7 @@
     <link rel="stylesheet" href="onsenui/css/onsenui.css" />
     <link rel="stylesheet" href="onsenui/css/onsen-css-components.min.css" />
     <link rel="stylesheet" href="css/index.css" />
+    <link rel="stylesheet" href="css/style.css" />
     <link rel="stylesheet" href="css/Chart.min.css" />
     <script src="js/Chart.bundle.js"></script>
 
@@ -40,25 +41,57 @@
             <ons-list-item onclick="loadPage('dashboard.html')" tappable>
               <ons-icon
                 style="color: rgb(0, 118, 255);"
-                icon="md-badge-check"
+                icon="md-view-dashboard"
                 class="mr-2"
                 size="20px"
               ></ons-icon>
               Dashboard
             </ons-list-item>
-            <ons-list-item onclick="loadPage('home.html')" tappable>
+            <ons-list-item tappable expandable>
               <ons-icon
                 style="color: rgb(0, 118, 255);"
-                icon="md-badge-check"
+                icon="md-view-list-alt"
                 class="mr-2"
                 size="20px"
               ></ons-icon>
               Sales
+              <div class="expandable-content">
+                <ons-list-item onclick="loadPage('sales.html')" tappable>
+                  <ons-icon
+                    style="color: rgb(0, 118, 255);"
+                    icon="md-assignment"
+                    class="mr-2"
+                    size="20px"
+                  ></ons-icon>
+                  Sales Log
+                </ons-list-item>
+                <ons-list-item onclick="loadPage('add-new-sale.html')" tappable>
+                  <ons-icon
+                    style="color: rgb(0, 118, 255);"
+                    icon="md-plus"
+                    class="mr-2"
+                    size="20px"
+                  ></ons-icon>
+                  Add Sale
+                </ons-list-item>
+              </div>
+            </ons-list-item>
+            <ons-list-item
+              onclick="loadPage('pages/target_home.html')"
+              tappable
+            >
+              <ons-icon
+                style="color: rgb(0, 118, 255);"
+                icon="md-center-focus-strong"
+                class="mr-2"
+                size="20px"
+              ></ons-icon>
+              Target
             </ons-list-item>
             <ons-list-item onclick="loadPage('attendance.html')" tappable>
               <ons-icon
                 style="color: rgb(0, 118, 255);"
-                icon="md-badge-check"
+                icon="md-gps-dot"
                 class="mr-2"
                 size="20px"
               ></ons-icon>
@@ -100,21 +133,17 @@
         <ons-navigator id="navigator"></ons-navigator>
 
         <ons-toast id="bottomToast" animation="lift">
-          <div id="bottomToastMessage">FABs up!</div>
+          <div id="bottomToastMessage"></div>
           <button onclick="bottomToast.hide()">ok</button>
         </ons-toast>
 
-        <ons-modal direction="up">
+        <ons-modal direction="up" id="mainModal">
           <div style="text-align: center;">
             <!-- <p>
               <ons-icon icon="md-spinner" size="28px" spin></ons-icon>
               Loading...
-            </p> -->
-            <!-- <svg
-              viewBox="0 0 300 57"
-              xmlns="http://www.w3.org/2000/svg"
-              style="width: 100%; text-align: center;"
-            >
+            </p> xmlns="http://www.w3.org/2000/svg" -->
+            <svg viewBox="0 0 300 57" style="width: 100%; text-align: center;">
               <text
                 x="50%"
                 y="50%"
@@ -137,7 +166,7 @@
               >
                 safari
               </text>
-            </svg> -->
+            </svg>
           </div>
         </ons-modal>
       </ons-splitter-content>

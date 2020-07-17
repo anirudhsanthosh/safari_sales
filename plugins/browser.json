@@ -34,10 +34,10 @@
       "FIREBASE_CRASHLYTICS_COLLECTION_ENABLED": "true",
       "PACKAGE_NAME": "com.entertext.safari.app"
     },
-    "cordova-plugin-local-notification": {
+    "cordova-android-support-gradle-release": {
       "PACKAGE_NAME": "com.entertext.safari.app"
     },
-    "cordova-android-support-gradle-release": {
+    "cordova-plugin-local-notification": {
       "PACKAGE_NAME": "com.entertext.safari.app"
     }
   },
