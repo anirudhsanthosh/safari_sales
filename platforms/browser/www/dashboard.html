@@ -1,0 +1,399 @@
+<ons-page id="dashboard">
+  <ons-toolbar id="home-toolbar" modifier="transparent">
+    <div class="left">
+      <ons-toolbar-button onclick="openMenu()">
+        <ons-icon icon="md-menu" style="color: rgb(0, 210, 223);"></ons-icon>
+      </ons-toolbar-button>
+    </div>
+    <div class="center"></div>
+    <div class="right">
+      <ons-button
+        modifier="quiet"
+        onclick="loadPage('account.html')"
+        style="color: rgb(74, 41, 216);"
+      >
+        <ons-icon icon="md-face" size="23px"> </ons-icon>
+      </ons-button>
+    </div>
+  </ons-toolbar>
+
+  <div class="dashboard-wrapper">
+    <ons-row class="dashboardRow">
+      <!-- first card-->
+      <ons-col
+        width="50%"
+        class="p-3 pr-2"
+        style="max-height: 50%; min-height: 50%;"
+      >
+        <div class="w-100 h-100 r-20 dashboard-card color-1 dashboardFirstCard">
+          <ons-row>
+            <ons-col
+              width="40px"
+              style="height: 50px;"
+              class="d-flex align-items-center justify-content-center"
+            >
+              <ons-icon
+                icon="md-chart"
+                size="30px"
+                class="list-item__icon p-0"
+                style="color: rgb(87, 235, 244);"
+              ></ons-icon>
+            </ons-col>
+            <ons-col
+              class="d-flex align-items-center"
+              style="height: 50px; color: #fff;"
+            >
+              <strong>Today's Sale</strong></ons-col
+            >
+          </ons-row>
+          <ons-row class="mt-2">
+            <ons-col
+              width="100%"
+              class="d-flex align-items-center p-2 text-white"
+            >
+              <strong class="todaysale dashboardDailyTargetAchive">0</strong>
+            </ons-col>
+          </ons-row>
+        </div>
+      </ons-col>
+      <!-- second card-->
+      <ons-col
+        width="50%"
+        class="p-3 pl-2"
+        style="max-height: 50%; min-height: 50%;"
+      >
+        <div class="w-100 h-100 r-20 dashboard-card">
+          <ons-row style="height: 100%; overflow: hidden;">
+            <ons-col width="100%" class="dashboardSecondCardColumn p-1 pb-1">
+              <div
+                class="dashboardSnackBar firstSnackbarBackground d-flex flex-column"
+              >
+                <div class="w-100 d-flex align-items-center">
+                  <div class="p-1">
+                    <ons-icon icon="md-fire" size="20px"> </ons-icon>
+                  </div>
+                  <div>Monthly Target</div>
+                </div>
+                <div
+                  class="w-100 text-bold p-1 rupee"
+                  id="dashboardMonthlyTarget"
+                >
+                  0
+                </div>
+              </div>
+            </ons-col>
+            <ons-col
+              width="100%"
+              class="dashboardSecondCardColumn p-1 pb-1 pt-1"
+            >
+              <div
+                class="dashboardSnackBar secondSnackbarBackground d-flex flex-column"
+              >
+                <div class="w-100 d-flex align-items-center">
+                  <div class="p-1">
+                    <ons-icon icon="md-flare" size="20px"> </ons-icon>
+                  </div>
+                  <div>Weekly Target</div>
+                </div>
+                <div
+                  class="w-100 text-bold p-1 rupee"
+                  id="dashboardWeeklyTaget"
+                >
+                  0
+                </div>
+              </div>
+            </ons-col>
+            <ons-col width="100%" class="dashboardSecondCardColumn p-1 pt-1">
+              <div
+                class="dashboardSnackBar thirdSnackbarBackground d-flex flex-column"
+              >
+                <div class="w-100 d-flex align-items-center">
+                  <div class="p-1">
+                    <ons-icon icon="md-flash" size="20px"> </ons-icon>
+                  </div>
+                  <div>Day Target</div>
+                </div>
+                <div
+                  class="w-100 text-bold p-1 rupee"
+                  id="dashboardDailyTarget"
+                >
+                  0
+                </div>
+              </div>
+            </ons-col>
+          </ons-row>
+        </div>
+      </ons-col>
+      <!-- third card-->
+      <ons-col
+        width="50%"
+        class="p-3 pr-2"
+        style="max-height: 50%; min-height: 50%;"
+      >
+        <div class="w-100 h-100 r-20 dashboard-card">
+          <ons-row style="height: 100%; overflow: hidden;">
+            <ons-col width="100%" class="dashboardSecondCardColumn p-1 pb-1">
+              <div
+                class="dashboardSnackBar firstSnackbarBackground d-flex flex-column"
+              >
+                <div class="w-100 d-flex align-items-center">
+                  <div class="p-1">
+                    <ons-icon icon="md-fire" size="20px"> </ons-icon>
+                  </div>
+                  <div class="font-09em">Monthly Achived</div>
+                </div>
+                <div class="w-100 text-bold p-1 rupee thisMonthAchived">
+                  0
+                </div>
+              </div>
+            </ons-col>
+            <ons-col
+              width="100%"
+              class="dashboardSecondCardColumn p-1 pb-1 pt-1"
+            >
+              <div
+                class="dashboardSnackBar secondSnackbarBackground d-flex flex-column"
+              >
+                <div class="w-100 d-flex align-items-center">
+                  <div class="p-1">
+                    <ons-icon icon="md-flare" size="20px"> </ons-icon>
+                  </div>
+                  <div class="font-09em">Weekly Achived</div>
+                </div>
+                <div
+                  class="w-100 text-bold p-1 rupee"
+                  id="dashboardWeeklyTagetAchived"
+                >
+                  0
+                </div>
+              </div>
+            </ons-col>
+            <ons-col width="100%" class="dashboardSecondCardColumn p-1 pt-1">
+              <div
+                class="dashboardSnackBar thirdSnackbarBackground d-flex flex-column"
+              >
+                <div class="w-100 d-flex align-items-center">
+                  <div class="p-1">
+                    <ons-icon icon="md-flash" size="20px"> </ons-icon>
+                  </div>
+                  <div class="font-09em">Day Achived</div>
+                </div>
+                <div
+                  class="w-100 text-bold p-1 rupee dashboardDailyTargetAchive"
+                >
+                  0
+                </div>
+              </div>
+            </ons-col>
+          </ons-row>
+        </div>
+      </ons-col>
+      <!-- fourth card-->
+      <ons-col
+        width="50%"
+        class="p-3 pl-2"
+        style="max-height: 50%; min-height: 50%;"
+      >
+        <div
+          class="w-100 h-100 r-20 dashboard-card color-2 dashboardFourthCard"
+        >
+          <ons-row vertical-align="top">
+            <ons-col
+              width="40px"
+              style="height: 50px;"
+              class="d-flex align-items-center justify-content-center"
+            >
+              <ons-icon
+                icon="md-chart-donut"
+                size="30px"
+                class="list-item__icon p-0"
+                style="color: rgb(164, 171, 215);"
+              ></ons-icon>
+            </ons-col>
+            <ons-col
+              class="d-flex align-items-center"
+              style="height: 50px; color: #fff;"
+            >
+              <strong>This Month Achived</strong>
+            </ons-col>
+          </ons-row>
+          <ons-row vertical-align="center">
+            <ons-col
+              width="100%"
+              class="d-flex justify-content-center p-2 pt-2"
+              style="width: 100%;"
+            >
+              <progress-ring
+                stroke="5"
+                radius="50"
+                progress="25"
+                style="width: 80%;"
+              ></progress-ring>
+            </ons-col>
+          </ons-row>
+          <ons-row vertical-align="bottom">
+            <ons-col
+              class="d-flex align-items-center justify-content-center"
+              style="height: 50px; color: #fff;"
+            >
+              <strong id="m" class="todaysale thisMonthAchived">0</strong>
+            </ons-col>
+          </ons-row>
+        </div>
+      </ons-col>
+    </ons-row>
+  </div>
+
+  <ons-modal direction="up" id="dashboardModal">
+    <div class="refresh-dashboard" id="refreshDashboardData">
+      <ons-icon icon="md-refresh" size="50px"> </ons-icon>
+    </div>
+  </ons-modal>
+
+  <script>
+    // page init function
+    ons.getScriptPage().onInit = function () {
+      // setting the side menu swipable
+      document.querySelector("#menu").setAttribute("swipeable");
+      // changing background colour of dashboard
+
+      // dashboard modal
+      const dashboardModal = document.querySelector("ons-modal#dashboardModal");
+
+      // initializing first card
+      document.querySelector(".dashboardFirstCard").onclick = function () {
+        this.style.backgroundImage = `none`;
+        setTimeout(function () {
+          document.querySelector(
+            ".dashboardFirstCard"
+          ).style.backgroundImage = `url("images/graph.svg?kk=${Math.random()}")`;
+        }, 100);
+      };
+
+      // adding ripple effect on click in snackbar
+      document.querySelectorAll(".dashboardSnackBar").forEach((e) => {
+        e.onclick = function (event) {
+          const circle = document.createElement("div");
+          const x = event.layerX;
+          const y = event.layerY;
+          circle.classList.add("circle");
+          circle.style.left = `${x}px`;
+          circle.style.top = `${y}px`;
+          this.appendChild(circle);
+
+          setTimeout(() => {
+            circle.remove();
+          }, 1000);
+        };
+      });
+
+      //adding animation when click on target chart
+      document.querySelector(".dashboardFourthCard").onclick = function () {
+        this.querySelector("progress-ring").animate();
+      };
+
+      // calling api to get dashboard data
+      function getDashboardData() {
+        showModal();
+        safari.getDashboardData(user.get("key"), (e) => {
+          showModal();
+
+          if (typeof e != "object") {
+            dashboardModal.show();
+            toast("Service unavailable please try again later !");
+            return;
+          }
+
+          if (e.status != "success" || !e.data) {
+            dashboardModal.show();
+            if (typeof e.message == "object") {
+              e.message.map((message) => {
+                ons.notification.toast(message, { timeout: 1300 });
+              });
+              return;
+            }
+
+            ons.notification.toast(e.message, { timeout: 2000 });
+            return;
+          }
+
+          // updating user data too
+          if (e.data && e.data.userData) {
+            user.set(e.data.userData);
+          }
+
+          // updating monthly target in all places
+          if (e.data && e.data.monthly && e.data.monthly.length !== 0) {
+            const thisMonth = e.data.monthly[0];
+            // setting fourth card piechart
+            document
+              .querySelector("progress-ring")
+              .setAttribute(
+                "progress",
+                Math.round((thisMonth.amount / thisMonth.target) * 100)
+              );
+            // setting all monthy achived columns
+            document
+              .querySelectorAll(".thisMonthAchived")
+              .forEach((element) => {
+                element.innerHTML = thisMonth.amount;
+              });
+            // setting monthly provided target
+            document.querySelector("#dashboardMonthlyTarget").innerHTML =
+              thisMonth.target;
+          }
+
+          // updating weekly target
+          if (e.data && e.data.weekly && e.data.weekly.length !== 0) {
+            const thisweek = e.data.weekly[0];
+            document.querySelector("#dashboardWeeklyTaget").innerHTML =
+              thisweek.target;
+
+            document.querySelector("#dashboardWeeklyTagetAchived").innerHTML =
+              thisweek.amount;
+          }
+          // updating weekly target
+          if (e.data && e.data.daily && e.data.daily.length !== 0) {
+            const today = e.data.daily[0];
+
+            document.querySelector("#dashboardDailyTarget").innerHTML =
+              today.target;
+            document
+              .querySelectorAll(".dashboardDailyTargetAchive")
+              .forEach((element) => {
+                element.innerHTML = today.amount;
+              });
+          }
+
+          // updating sale data
+          salesOverView.reset();
+          if (e.data.salesData) {
+            salesOverView.set(e.data.salesData);
+          }
+        });
+      }
+
+      // adding onclick event to modal button for refreshing dashboard when faild to load data from server
+      document.querySelector("#refreshDashboardData").onclick = function () {
+        this.classList.add("load");
+        const self = this;
+        setTimeout(() => {
+          self.classList.remove("load");
+          dashboardModal.hide();
+          getDashboardData();
+        }, 550);
+      };
+      // firing getDashboardData() for get data from server
+      getDashboardData();
+
+      // adding background to first card in onshow event of onsen
+      this.onShow = function () {
+        document.querySelector(
+          "#dashboard>.page__background"
+        ).style.backgroundColor = "#fff";
+
+        document.querySelector(".dashboardFirstCard").classList.add("bg-graph");
+      };
+    };
+  </script>
+</ons-page>

@@ -1,0 +1,80 @@
+{
+  "prepare_queue": {
+    "installed": [],
+    "uninstalled": []
+  },
+  "config_munge": {
+    "files": {}
+  },
+  "installed_plugins": {
+    "cordova-android-support-gradle-release": {
+      "ANDROID_SUPPORT_VERSION": "27.+",
+      "PACKAGE_NAME": "com.entertext.safari.app"
+    },
+    "cordova-custom-config": {
+      "PACKAGE_NAME": "com.entertext.safari.app"
+    },
+    "cordova-plugin-firebasex": {
+      "FIREBASE_ANALYTICS_COLLECTION_ENABLED": "true",
+      "FIREBASE_PERFORMANCE_COLLECTION_ENABLED": "true",
+      "FIREBASE_CRASHLYTICS_COLLECTION_ENABLED": "true",
+      "ANDROID_ICON_ACCENT": "#FF00FFFF",
+      "ANDROID_PLAY_SERVICES_AUTH_VERSION": "18.0.0",
+      "ANDROID_FIREBASE_ANALYTICS_VERSION": "17.4.0",
+      "ANDROID_FIREBASE_MESSAGING_VERSION": "20.1.6",
+      "ANDROID_FIREBASE_CONFIG_VERSION": "19.1.4",
+      "ANDROID_FIREBASE_PERF_VERSION": "19.0.7",
+      "ANDROID_FIREBASE_AUTH_VERSION": "19.3.1",
+      "ANDROID_FIREBASE_FIRESTORE_VERSION": "21.4.3",
+      "ANDROID_CRASHLYTICS_VERSION": "2.10.1",
+      "ANDROID_CRASHLYTICS_NDK_VERSION": "2.1.1",
+      "ANDROID_GSON_VERSION": "2.8.6",
+      "PACKAGE_NAME": "com.entertext.safari.app"
+    },
+    "cordova-plugin-geolocation": {
+      "PACKAGE_NAME": "com.entertext.safari.app"
+    },
+    "cordova-plugin-local-notification": {
+      "PACKAGE_NAME": "com.entertext.safari.app"
+    },
+    "cordova-plugin-mock-gps-checker": {
+      "PACKAGE_NAME": "com.entertext.safari.app"
+    },
+    "cordova-plugin-screen-orientation": {
+      "PACKAGE_NAME": "com.entertext.safari.app"
+    },
+    "cordova-plugin-splashscreen": {
+      "PACKAGE_NAME": "com.entertext.safari.app"
+    },
+    "cordova-plugin-whitelist": {
+      "PACKAGE_NAME": "com.entertext.safari.app"
+    },
+    "cordova.plugins.diagnostic": {
+      "ANDROID_SUPPORT_VERSION": "28.+",
+      "PACKAGE_NAME": "com.entertext.safari.app"
+    }
+  },
+  "dependent_plugins": {
+    "cordova-plugin-androidx": {
+      "PACKAGE_NAME": "com.entertext.safari.app"
+    },
+    "cordova-plugin-androidx-adapter": {
+      "PACKAGE_NAME": "com.entertext.safari.app"
+    },
+    "cordova-plugin-badge": {
+      "PACKAGE_NAME": "com.entertext.safari.app"
+    },
+    "cordova-plugin-device": {
+      "PACKAGE_NAME": "com.entertext.safari.app"
+    },
+    "es6-promise-plugin": {
+      "PACKAGE_NAME": "com.entertext.safari.app"
+    },
+    "cordova-support-google-services": {
+      "PACKAGE_NAME": "com.entertext.safari.app"
+    },
+    "phonegap-plugin-multidex": {
+      "PACKAGE_NAME": "com.entertext.safari.app"
+    }
+  }
+}
