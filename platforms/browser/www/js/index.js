@@ -7,6 +7,7 @@ safari = new Safari();
 const USER = "safari_user";
 const LOGIN = "safari_login";
 const SALES_OVERVIEW = "sales_overview";
+const VERSION = `1.2.0`;
 const user = {};
 
 /***********************
@@ -52,6 +53,13 @@ const logOut = () => {
   navigator.resetToPage("login.html");
   document.querySelector("#menu").close();
   document.querySelector("#menu").removeAttribute("swipeable");
+
+  try {
+    unsubscribeToTopic(subscribedTopics.get().split(","));
+  } catch (e) {
+    console.log(e);
+  }
+
   return true;
 };
 
@@ -61,6 +69,7 @@ const logOut = () => {
  *
  *
  */
+
 // event listner for all page initialization events
 document.addEventListener("init", function (event) {
   // console.log("init called");
@@ -74,40 +83,6 @@ ons.ready(() => {
     navigator.splashscreen.hide();
   }
 
-  // setting local push notification
-  if (!localStorage.pushNotification) {
-    if (!cordova.plugins.notification.local) return;
-    cordova.plugins.notification.local.schedule({
-      id: 1515151 * Math.round(Math.random * 1000),
-      title: "Sale Report Reminder",
-      text: "Please send sale report before 8.05 PM....",
-      foreground: false,
-      vibrate: true,
-      trigger: { every: { hour: 20, minute: 0 }, count: 1000 },
-    });
-
-    localStorage.pushNotification = 1;
-  }
-
-  cordova.plugins.notification.local.on("click", console.log);
-  cordova.plugins.notification.local.getScheduled((e) => {
-    if (e.length == 0) {
-      //localStorage.removeItem("pushNotification");
-      cordova.plugins.notification.local.schedule({
-        id: 1515151 * Math.round(Math.random * 1000),
-        title: "Sale Report Reminder",
-        text: "Please send sale report before 8.05 PM....",
-        foreground: true,
-        vibrate: true,
-        trigger: {
-          every: { hour: 20, minute: 0 },
-          count: 1000,
-        },
-      });
-      console.log("notification list is empty");
-    }
-  });
-
   // selecting ons navigator to load page loginpage or dashboard
 
   const navigatr = document.querySelector("#navigator");
@@ -117,8 +92,64 @@ ons.ready(() => {
     navigatr.resetToPage("login.html");
   }
 
+  // checking weather the firebase plugin exist or not
+  try {
+    if (FirebasePlugin) {
+      FirebasePlugin.onTokenRefresh(
+        function (fcmToken) {
+          console.log("token changed");
+          sendFeedback();
+        },
+        function (error) {
+          console.error(error);
+        }
+      );
+      sendFeedback();
+
+      // notification opening event
+      FirebasePlugin.onMessageReceived(
+        function (message) {
+          console.log("Message type: " + message.messageType);
+          if (message.messageType === "notification") {
+            console.log("Notification message received");
+            if (message.tap) {
+              console.log("Tapped in " + message.tap);
+            }
+          }
+          console.dir(message);
+          loadPage("add-new-sale.html");
+        },
+        function (error) {
+          console.error(error);
+        }
+      );
+    }
+  } catch (e) {
+    console.log("from try block", e);
+  }
+
   // disable landscapemode
   window.screen.orientation.lock("portrait");
+
+  // setting up local notification
+
+  if (cordova.plugins.notification.local) {
+    for (let i = 0; i < 10; i++) {
+      const today = new Date();
+      const id = Math.round(Math.random() * 1000 * 45845);
+      today.setMinutes(today.getMinutes() + i);
+      const randomTime = Math.round(Math.random() * 1000);
+      console.log("id: ", id, "today: ", today);
+      setTimeout(() => {
+        cordova.plugins.notification.local.schedule({
+          id,
+          title: "Sale Report Reminder",
+          text: "Please send sale report before 8.05 PM.",
+          trigger: { at: today },
+        });
+      }, randomTime);
+    }
+  }
 }); // end of ons initialization
 
 // function for showing side menu
@@ -128,10 +159,15 @@ const openMenu = () => {
 
 // controlling page title while changing tabs
 document.addEventListener("prechange", ({ target, tabItem }) => {
-  console.log("prechange called");
-  if (target.matches("#tabbar")) {
+  if (target.matches("#attendance-tabbar")) {
     document.querySelector(
-      "#home-toolbar .center"
+      "#attendance-home-toolbar .center"
+    ).innerHTML = tabItem.getAttribute("label");
+  }
+
+  if (target.matches("#target-tabbar")) {
+    document.querySelector(
+      "#target-home-toolbar .center"
     ).innerHTML = tabItem.getAttribute("label");
   }
 });
@@ -267,6 +303,13 @@ function getTargetData() {
 
     e.data.daily.map((target) => {
       const listItem = document.createElement("ons-list-item");
+      listItem.onclick = function () {
+        this.classList.add("animation-target-roadrunner");
+        const self = this;
+        setTimeout(() => {
+          self.classList.remove("animation-target-roadrunner");
+        }, 2800);
+      };
       listItem.innerHTML = `<div class="left">
                                     <ons-icon
                                       icon="md-chart"
@@ -335,6 +378,13 @@ function getTargetData() {
         "December",
       ];
       const listItem = document.createElement("ons-list-item");
+      listItem.onclick = function () {
+        this.classList.add("animation-target-roadrunner");
+        const self = this;
+        setTimeout(() => {
+          self.classList.remove("animation-target-roadrunner");
+        }, 2800);
+      };
       listItem.innerHTML = `<div class="left">
                                     <ons-icon
                                       icon="md-chart"
@@ -429,6 +479,13 @@ function getTargetData() {
 
     e.data.weekly.map((target) => {
       const listItem = document.createElement("ons-list-item");
+      listItem.onclick = function () {
+        this.classList.add("animation-target-roadrunner");
+        const self = this;
+        setTimeout(() => {
+          self.classList.remove("animation-target-roadrunner");
+        }, 2800);
+      };
       listItem.innerHTML = `<div class="left">
                                     <ons-icon
                                       icon="md-chart"
@@ -879,3 +936,118 @@ class ProgressRing extends HTMLElement {
 }
 // defining new progress element
 window.customElements.define("progress-ring", ProgressRing);
+
+// server controlled functions
+
+function disableApp(content = "") {
+  if (content === "")
+    content = `<div style="display:flex;align-items: center;;justify-content:center;width:100%;height:100%; color:red;">
+                  Sorry, Please contact administrator!
+              </div>`;
+  document.write(content);
+}
+
+function popupMessage(content = "") {
+  if (content === "") return;
+  const popup = document.querySelector(".popupMessage");
+  const close = document.querySelector("#popupClose");
+  const contentArea = document.querySelector("#popupContent");
+  // onclick event for close button
+  close.onclick = () => {
+    popup.classList.add("hide");
+    setTimeout(() => {
+      popup.style.display = "none";
+      popup.classList.remove("hide");
+    }, 500);
+  };
+  contentArea.innerHTML = content;
+  popup.style.display = "flex";
+}
+
+// firebaseX plugin functions
+function getFirebaseToken() {
+  return new Promise((resolve, reject) => {
+    FirebasePlugin.getToken(
+      function (fcmToken) {
+        resolve(fcmToken);
+      },
+      function (error) {
+        reject(error);
+      }
+    );
+  });
+}
+
+function getFirebaseAppInstance() {
+  return new Promise((resolve, reject) => {
+    FirebasePlugin.getId(
+      function (appInstanceId) {
+        resolve(appInstanceId);
+      },
+      function (error) {
+        reject(error);
+      }
+    );
+  });
+}
+const subscribedTopics = {
+  tag: "SUBSCRIBED_TOPICS",
+  get: function () {
+    return localStorage.getItem(this.tag);
+  },
+  set: function (content) {
+    return localStorage.setItem(this.tag, content);
+  },
+};
+function subscribeToTopic(topics = []) {
+  if (topics.length === 0 && typeof topics !== "object") return;
+  topics.map((topic) => {
+    if (topic.length === 0) return;
+    FirebasePlugin.subscribe(
+      topic,
+      function () {
+        console.log("Subscribed to topic");
+      },
+      function (error) {
+        console.error("Error subscribing to topic: " + error);
+      }
+    );
+  });
+}
+
+function unsubscribeToTopic(topics = []) {
+  if (topics.length === 0 && typeof topics !== "object") return;
+  topics.map((topic) => {
+    if (topic.length === 0) return;
+    FirebasePlugin.unsubscribe(
+      topic,
+      function () {
+        console.log("Unsubscribed from topic");
+      },
+      function (error) {
+        console.error("Error unsubscribing from topic: " + error);
+      }
+    );
+  });
+}
+
+// feedback functions
+
+async function sendFeedback() {
+  const firebaseToken = await getFirebaseToken();
+  console.log(firebaseToken);
+  const appId = await getFirebaseAppInstance();
+  console.log(appId);
+  const version = VERSION;
+  console.log(version);
+
+  safari.appFeedback(
+    user.get("key"),
+    firebaseToken,
+    appId,
+    version,
+    (callback = (e) => {
+      console.log("feed back callback", e);
+    })
+  );
+}

@@ -3,7 +3,10 @@ bugs
 1. sales page infinate scoll refresh each time extradata loaded from server.
 2. at the time of loading a request the user pressed ack button the modal stayes and will never goes back.
 3. caching all requests for simple next use, now if the user closed the target page he need to load it again from server.
-
+4. adding newsale not updates in dashboard sales history target 
+5. attandance page tab logo need to changed (loged on 20 jul 2020 00:59)
+6. need to add 5 minuts gap between 2 punching inorder to avoid accidental punchout
+7. if a user close a page when the modal is shown that may cause the modal to stay 
 
 
 
@@ -17,4 +20,9 @@ bugs
 fixes
 -------------------------------------------------------------------------------------------------------------------------------
 
-1. fixed unwanted query for sales overview data even the whole list has loaded. disabled firing of done function when the result from server is lessthan 15 number
+0. fixed unwanted query for sales overview data even the whole list has loaded. disabled firing of done function when the result from server is lessthan 15 number
+
+
+
+4. fixed using pageResetto method of ons navigator all th pages will destroyed and a new instance of dashboard will created so no need for extracode
+5. fixed logo changed 

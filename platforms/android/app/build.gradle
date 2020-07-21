@@ -104,6 +104,7 @@ apply from: "../cordova-plugin-firebasex/app-build.gradle"
 apply from: "../cordova-plugin-local-notification/app-localnotification.gradle"
 apply from: "../cordova-support-google-services/app-build.gradle"
 apply from: "../phonegap-plugin-multidex/app-multidex.gradle"
+apply from: "../cordova-android-firebase-gradle-release/app-cordova-android-firebase-gradle-release.gradle"
 // PLUGIN GRADLE EXTENSIONS END
 
 def hasBuildExtras1 = file('build-extras.gradle').exists()

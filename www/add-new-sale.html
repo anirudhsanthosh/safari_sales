@@ -276,11 +276,10 @@
           toast(e.message);
           if (e.data.length == 1) {
             salesOverView.set(e.data);
-            showSalesOverview();
-            getTargetData();
           }
           const navigator = document.querySelector("#navigator");
-          navigator.popPage();
+          //navigator.popPage();
+          navigator.resetToPage('dashboard.html');
           return;
         }
       );

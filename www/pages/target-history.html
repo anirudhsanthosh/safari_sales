@@ -1,0 +1,121 @@
+<ons-page id="target-history">
+  <ons-pull-hook modifier="material" id="target-log-pull-hook"></ons-pull-hook>
+  <ons-list id="target-history-list"> </ons-list>
+
+  <script>
+    //var ctx = document.getElementById("myChart").getContext("2d");
+
+    ons.getScriptPage().onInit = function () {
+      // template for creating list element
+      listItem = (data) => {
+        if (typeof data !== "object") return null;
+        const elem = document.createElement("ons-list-item");
+        elem.setAttribute("tappable");
+        elem.setAttribute("expandable");
+        elem.innerHTML = `
+        <div class="left">
+            <ons-icon icon="md-chart" size="50px" class="list-item__icon" style="color: rgb(74, 41, 216);" ></ons-icon>
+        </div>
+
+        <div class="center">
+            <span class="list-item__title">${data.monthname} ${data.year}</span>
+            <span class="list-item__subtitle">Target : ${data.target}</span>
+            <span class="list-item__subtitle">Achived : ${
+              data.mtd
+            } (${Math.floor((data.mtd / data.target) * 100)}%)</span>
+        </div>
+
+        <div class="right d-flex flex-column justify-content-center align-items-center" >
+            <div class="w-100">
+                <ons-progress-circular value="${Math.floor(
+                  (data.mtd / data.target) * 100
+                )}" secondary-value="100" ></ons-progress-circular>
+            </div>
+            <div class="w-100 text-center" style="color:rgb(0, 210, 223);"> ${Math.floor(
+              (data.mtd / data.target) * 100
+            )}% </div>
+        </div>
+        <div class="expandable-content ">
+            <div class="w-100 d-flex flex-column text-center">
+            <span class="list-item__subtitle">American Tourister : ${
+              data.at
+            }</span>
+            <span class="list-item__subtitle">VIP : ${data.vip}</span>
+            <span class="list-item__subtitle">Other Brands : ${
+              data.otherbrand
+            }</span>
+        </div>
+        </div>
+                            `;
+        return elem;
+      };
+
+      // the forced option is added for differentiate between initial call and refreshing call first if we call show modal it will hide the modal because the modal is already showing from first page
+      function getTargetHistory(option = { forced: false }) {
+        const listElement = document.querySelector("#target-history-list");
+
+        safari.getTargetHistory(user.get("key"), (e) => {
+          if (option.forced) showModal();
+          if (typeof e != "object") {
+            toast("Service unavailable please try again later !");
+            return;
+          }
+
+          if (e.status != "success") {
+            if (e.data) {
+              salesOverView.reset();
+              salesOverView.set(e.data);
+              showSalesOverview();
+            }
+
+            if (typeof e.message == "object") {
+              e.message.map((message) => {
+                ons.notification.toast(message, { timeout: 1300 });
+              });
+              return;
+            }
+            ons.notification.toast(e.message, { timeout: 2000 });
+            return;
+          }
+          listElement.innerHTML = "";
+          e.data.targets.map((target) => {
+            listElement.appendChild(listItem(target));
+          });
+        });
+      }
+      getTargetHistory();
+
+      document
+        .getElementById("target-log-pull-hook")
+        .addEventListener("changestate", function (event) {
+          let message = "";
+
+          switch (event.state) {
+            case "initial":
+              message = "Pull to refresh";
+              break;
+            case "preaction":
+              message = "Release";
+              break;
+            case "action":
+              message = "Loading...";
+              break;
+          }
+
+          document.getElementById("target-log-pull-hook").innerHTML = message;
+        });
+
+      document.getElementById("target-log-pull-hook").onAction = function (
+        done
+      ) {
+        showModal();
+        getTargetHistory({ forced: true });
+        setTimeout(done, 1000);
+      };
+
+      this.onShow = function () {};
+      this.onHide = function () {};
+      this.onDestroy = function () {};
+    };
+  </script>
+</ons-page>

@@ -253,8 +253,6 @@
   <script>
     // page init function
     ons.getScriptPage().onInit = function () {
-      // setting the side menu swipable
-      document.querySelector("#menu").setAttribute("swipeable");
       // changing background colour of dashboard
 
       // dashboard modal
@@ -280,8 +278,10 @@
           circle.style.left = `${x}px`;
           circle.style.top = `${y}px`;
           this.appendChild(circle);
+          this.classList.add("animation-target");
 
           setTimeout(() => {
+            this.classList.remove("animation-target");
             circle.remove();
           }, 1000);
         };
@@ -316,10 +316,40 @@
             ons.notification.toast(e.message, { timeout: 2000 });
             return;
           }
+          console.log(e);
+          // setting the side menu swipable
+          document.querySelector("#menu").setAttribute("swipeable");
 
           // updating user data too
           if (e.data && e.data.userData) {
             user.set(e.data.userData);
+          }
+
+          // updating settings
+          if (e.data && e.data.settings) {
+            const settings = e.data.settings;
+            if (settings.disable_app !== "0") {
+              disableApp(settings.disable_info);
+            }
+            const subscriptions = settings.notification_subscrption;
+            try {
+              subscribeToTopic(subscriptions.split(","));
+              subscribedTopics.set(subscriptions);
+            } catch (e) {
+              console.log(e);
+            }
+            const unsubscriptions = settings.notification_unsubscrption.split(
+              ","
+            );
+            try {
+              unsubscribeToTopic(unsubscriptions);
+            } catch (e) {
+              console.log(e);
+            }
+
+            if (settings.popup === "1") {
+              popupMessage(settings.popup_content);
+            }
           }
 
           // updating monthly target in all places

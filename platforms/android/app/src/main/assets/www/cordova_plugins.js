@@ -200,6 +200,7 @@ cordova.define('cordova/plugin_list', function(require, exports, module) {
     "cordova-plugin-whitelist": "1.3.4",
     "cordova-support-google-services": "1.3.2",
     "cordova.plugins.diagnostic": "5.0.2",
-    "phonegap-plugin-multidex": "1.0.0"
+    "phonegap-plugin-multidex": "1.0.0",
+    "cordova-android-firebase-gradle-release": "4.0.0"
   };
 });

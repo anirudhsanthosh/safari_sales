@@ -26,13 +26,13 @@
       <!-- The side menu -->
       <ons-splitter-side id="menu" collapse width="220px">
         <ons-page>
-          <ons-list>
+          <ons-list style="color: rgb(35 64 143);">
             <ons-list-item>
               <p
                 style="
                   font-weight: 1200;
                   font-size: 1.5em;
-                  color: rgb(0, 118, 255);
+                  color: rgb(35 64 143);
                 "
               >
                 <img src="images/logo.png" class="menulogo" alt="safari" />
@@ -40,7 +40,7 @@
             </ons-list-item>
             <ons-list-item onclick="loadPage('dashboard.html')" tappable>
               <ons-icon
-                style="color: rgb(0, 118, 255);"
+                style="color: rgb(35 64 143);"
                 icon="md-view-dashboard"
                 class="mr-2"
                 size="20px"
@@ -49,7 +49,7 @@
             </ons-list-item>
             <ons-list-item tappable expandable>
               <ons-icon
-                style="color: rgb(0, 118, 255);"
+                style="color: rgb(35 64 143);"
                 icon="md-view-list-alt"
                 class="mr-2"
                 size="20px"
@@ -58,16 +58,16 @@
               <div class="expandable-content">
                 <ons-list-item onclick="loadPage('sales.html')" tappable>
                   <ons-icon
-                    style="color: rgb(0, 118, 255);"
+                    style="color: rgb(35 64 143);"
                     icon="md-assignment"
                     class="mr-2"
                     size="20px"
                   ></ons-icon>
-                  Sales Log
+                  Sales Report
                 </ons-list-item>
                 <ons-list-item onclick="loadPage('add-new-sale.html')" tappable>
                   <ons-icon
-                    style="color: rgb(0, 118, 255);"
+                    style="color: rgb(35 64 143);"
                     icon="md-plus"
                     class="mr-2"
                     size="20px"
@@ -81,16 +81,19 @@
               tappable
             >
               <ons-icon
-                style="color: rgb(0, 118, 255);"
+                style="color: rgb(35 64 143);"
                 icon="md-center-focus-strong"
                 class="mr-2"
                 size="20px"
               ></ons-icon>
               Target
             </ons-list-item>
-            <ons-list-item onclick="loadPage('attendance.html')" tappable>
+            <ons-list-item
+              onclick="loadPage('pages/attendance-home.html')"
+              tappable
+            >
               <ons-icon
-                style="color: rgb(0, 118, 255);"
+                style="color: rgb(35 64 143);"
                 icon="md-gps-dot"
                 class="mr-2"
                 size="20px"
@@ -99,7 +102,7 @@
             </ons-list-item>
             <ons-list-item onclick="loadPage('account.html')" tappable>
               <ons-icon
-                style="color: rgb(0, 118, 255);"
+                style="color: rgb(35 64 143);"
                 icon="md-account-circle"
                 class="mr-2"
                 size="20px"
@@ -108,7 +111,7 @@
             </ons-list-item>
             <ons-list-item onclick="loadPage('settings.html')" tappable>
               <ons-icon
-                style="color: rgb(0, 118, 255);"
+                style="color: rgb(35 64 143);"
                 icon="md-settings"
                 class="mr-2"
                 size="20px"
@@ -117,7 +120,7 @@
             </ons-list-item>
             <ons-list-item onclick="logOut()" tappable>
               <ons-icon
-                style="color: rgb(0, 118, 255);"
+                style="color: rgb(35 64 143);"
                 icon="fa-sign-out"
                 class="mr-2"
                 size="20px"
@@ -171,6 +174,12 @@
         </ons-modal>
       </ons-splitter-content>
     </ons-splitter>
+    <div class="popupMessage">
+      <div class="popupClose">
+        <span id="popupClose">&#10005;</span>
+      </div>
+      <div class="popupContent" id="popupContent"></div>
+    </div>
 
     <script type="text/javascript" src="cordova.js"></script>
     <script src="onsenui/js/onsenui.min.js"></script>

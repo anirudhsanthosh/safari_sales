@@ -8,19 +8,46 @@
         "animation-options",
         "{duration: 1,delay: 0.5,timing: 'ease-in'}"
       );
+      const classList = [
+        "red",
+        "teal",
+        "blue",
+        "teal",
+        "yellow",
+        "blue",
+        "black",
+      ];
+      document.getElementById("loginButton").classList.add(classList[0]);
 
       let reverse = false;
       const interval = setInterval(() => {
         if (!reverse) {
+          if (!carousel) return;
           try {
             carousel.next();
+            if (!document.getElementById("loginButton")) return;
+            document
+              .getElementById("loginButton")
+              .classList.remove(classList[carousel.getActiveIndex() - 1]);
+            document
+              .getElementById("loginButton")
+              .classList.add(classList[carousel.getActiveIndex()]);
+
             if (carousel.itemCount - 1 == carousel.getActiveIndex())
               reverse = true;
             return;
-          } catch (e) {}
+          } catch (e) {
+            console.log(e);
+          }
         }
         try {
           carousel.prev();
+          document
+            .getElementById("loginButton")
+            .classList.remove(classList[carousel.getActiveIndex() + 1]);
+          document
+            .getElementById("loginButton")
+            .classList.add(classList[carousel.getActiveIndex()]);
         } catch (e) {
           //
         }
@@ -111,27 +138,27 @@
       animation-options="{duration: 0.2, delay: 1, timing: 'ease-in'}"
       id="carousel"
     >
-      <ons-carousel-item style="background-color: #085078;"
+      <ons-carousel-item style="background-color: #085078;" data-class="red"
         ><img class="carouselImage" src="images/1.jpg" />
       </ons-carousel-item>
-      <ons-carousel-item style="background-color: #373b44;"
+      <ons-carousel-item style="background-color: #373b44;" data-class="red"
         ><img class="carouselImage" src="images/2.jpg"
       /></ons-carousel-item>
-      <ons-carousel-item style="background-color: #d38312;"
+      <ons-carousel-item style="background-color: #d38312;" data-class="red"
         ><img class="carouselImage" src="images/3.jpg"
       /></ons-carousel-item>
-      <ons-carousel-item style="background-color: #d38312;"
+      <ons-carousel-item style="background-color: #d38312;" data-class="red"
         ><img class="carouselImage" src="images/4.jpg"
       /></ons-carousel-item>
 
-      <ons-carousel-item style="background-color: #d38312;"
+      <ons-carousel-item style="background-color: #d38312;" data-class="red"
         ><img class="carouselImage" src="images/5.jpg"
       /></ons-carousel-item>
 
-      <ons-carousel-item style="background-color: #d38312;"
+      <ons-carousel-item style="background-color: #d38312;" data-class="red"
         ><img class="carouselImage" src="images/6.jpg"
       /></ons-carousel-item>
-      <ons-carousel-item style="background-color: #d38312;"
+      <ons-carousel-item style="background-color: #d38312;" data-class="red"
         ><img class="carouselImage" src="images/7.jpg"
       /></ons-carousel-item>
     </ons-carousel>

@@ -449,6 +449,7 @@ let Safari = function () {
           callback(data);
         })
         .catch((error) => {
+          console.log(error);
           callback({ status: "error", message: ["internal error"] });
         });
     },
@@ -537,6 +538,97 @@ let Safari = function () {
         })
         .catch((error) => {
           console.log(error);
+          callback({
+            status: "error",
+            message: [
+              "Unable to contact server, Please check network connection",
+            ],
+          });
+        });
+    },
+    getTargetHistory: function (key = "", callback = (e) => console.log(e)) {
+      if (key.length < 8) {
+        callback({ status: "error", message: ["check key"] });
+        return;
+      }
+      const url = `${safari.url}/view_target_history.php`;
+      axios({
+        method: "post",
+        url: url,
+        data: JSON.stringify({ key }),
+      })
+        .then((response) => {
+          const { data } = response;
+          callback(data);
+        })
+        .catch((error) => {
+          console.log(error);
+          callback({
+            status: "error",
+            message: [
+              "Unable to contact server, Please check network connection",
+            ],
+          });
+        });
+    },
+    getAttandanceHistory: function (
+      key = "",
+      from = "",
+      to = "",
+      callback = (e) => console.log(e)
+    ) {
+      if (key.length < 8) {
+        callback({ status: "error", message: ["check key"] });
+        return;
+      }
+      const url = `${safari.url}/view_attendance_history.php`;
+      axios({
+        method: "post",
+        url: url,
+        data: JSON.stringify({ key, from, to }),
+      })
+        .then((response) => {
+          const { data } = response;
+          callback(data);
+        })
+        .catch((error) => {
+          console.log(error);
+          callback({
+            status: "error",
+            message: [
+              "Unable to contact server, Please check network connection",
+            ],
+          });
+        });
+    },
+    appFeedback: function (
+      key = "",
+      firebase_device_token = "",
+      firebase_app_id = "",
+      app_version = "",
+      callback = (e) => console.log(e)
+    ) {
+      if (key.length < 8) {
+        callback({ status: "error", message: ["check key"] });
+        return;
+      }
+      const url = `${safari.url}/appFeedback.php`;
+      axios({
+        method: "post",
+        url: url,
+        data: JSON.stringify({
+          key,
+          firebase_device_token,
+          firebase_app_id,
+          app_version,
+        }),
+      })
+        .then((response) => {
+          const { data } = response;
+          callback(data);
+        })
+        .catch((error) => {
+          console.log("feedback error", error);
           callback({
             status: "error",
             message: [
