@@ -29,15 +29,15 @@
           "/*": [
             {
               "xml": "<uses-permission android:name=\"android.permission.INTERNET\" />",
-              "count": 2004
+              "count": 2005
             },
             {
               "xml": "<uses-permission android:name=\"android.permissions.NETWORK_ACCESS\" />",
-              "count": 2003
+              "count": 2004
             },
             {
               "xml": "<uses-permission android:name=\"android.permissions.ACCESS_NETWORK_STATE\" />",
-              "count": 2003
+              "count": 2004
             },
             {
               "xml": "<uses-permission android:name=\"android.permission.ACCESS_NETWORK_STATE\" />",
